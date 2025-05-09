@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Recipe Rumble</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-teal-600 text-white p-4 sticky top-0 z-10 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Recipe Rumble</h1>
+            <nav class="space-x-4">
+                <a href="{{ url_for('index') }}" class="hover:text-teal-200">Home</a>
+                <a href="{{ url_for('submissions') }}" class="hover:text-teal-200">Submissions</a>
+                <a href="{{ url_for('leaderboard') }}" class="hover:text-teal-200">Leaderboard</a>
+                <a href="{{ url_for('admin') }}" class="hover:text-teal-200">Admin Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="hover:text-teal-200">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 flex-grow">
+        <h2 class="text-3xl font-semibold text-teal-700 mb-6">Admin Dashboard</h2>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="flex space-x-4 mb-6">
+            <a href="{{ url_for('admin', tab='post_recipe') }}" class="px-4 py-2 {% if active_tab == 'post_recipe' %}bg-teal-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} rounded hover:bg-teal-600 hover:text-white transition">Post Recipe</a>
+            <a href="{{ url_for('admin', tab='view_submissions') }}" class="px-4 py-2 {% if active_tab == 'view_submissions' %}bg-teal-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} rounded hover:bg-teal-600 hover:text-white transition">View Submissions</a>
+            <a href="{{ url_for('admin', tab='manage_users') }}" class="px-4 py-2 {% if active_tab == 'manage_users' %}bg-teal-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} rounded hover:bg-teal-600 hover:text-white transition">Manage Users</a>
+        </div>
+
+        {% if active_tab == 'post_recipe' %}
+            {% if active_recipe %}
+                <p class="text-gray-600 mb-4">An active recipe is currently posted: {{ active_recipe['title'] }}</p>
+            {% else %}
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-teal-600 mb-4">Post New Recipe</h3>
+                    <form method="post" enctype="multipart/form-data" action="{{ url_for('admin', tab='post_recipe') }}">
+                        <div class="mb-4">
+                            <label for="title" class="block text-gray-700">Title:</label>
+                            <input type="text" name="title" id="title" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        </div>
+                        <div class="mb-4">
+                            <label for="ingredients" class="block text-gray-700">Ingredients:</label>
+                            <textarea name="ingredients" id="ingredients" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="instructions" class="block text-gray-700">Instructions:</label>
+                            <textarea name="instructions" id="instructions" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="image" class="block text-gray-700">Image (optional):</label>
+                            <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        </div>
+                        <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">Post Recipe</button>
+                    </form>
+                </div>
+            {% endif %}
+        {% elif active_tab == 'view_submissions' %}
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold text-teal-600 mb-4">All Submissions</h3>
+                {% if submissions %}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% for submission in submissions %}
+                            <div class="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                                <p class="text-gray-700"><strong>ID:</strong> {{ submission['submission_id'] }}</p>
+                                <p class="text-gray-700"><strong>Recipe:</strong> {{ submission['title'] }}</p>
+                                <p class="text-gray-700"><strong>User:</strong> {{ submission['username'] }}</p>
+                                <p class="text-gray-700"><strong>Submitted:</strong> {{ submission['submitted_at'] }}</p>
+                                {% if submission['image_base64'] %}
+                                    <img src="data:image/jpeg;base64,{{ submission['image_base64'] }}" alt="Submission" class="w-full max-w-xs rounded-lg mt-2">
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-gray-600">No submissions yet.</p>
+                {% endif %}
+            </div>
+        {% elif active_tab == 'manage_users' %}
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold text-teal-600 mb-4">Manage Users</h3>
+                {% if users %}
+                    <table class="w-full table-auto">
+                        <thead>
+                            <tr class="bg-teal-100">
+                                <th class="px-4 py-2 text-left text-teal-700">Username</th>
+                                <th class="px-4 py-2 text-left text-teal-700">Role</th>
+                                <th class="px-4 py-2 text-left text-teal-700">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr class="hover:bg-teal-50 transition">
+                                    <td class="border px-4 py-2">{{ user['username'] }}</td>
+                                    <td class="border px-4 py-2">{{ user['role'] }}</td>
+                                    <td class="border px-4 py-2">{{ user['points'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-gray-600">No users found.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </main>
+
+    <footer class="bg-teal-600 text-white p-4 text-center">
+        <p>&copy; 2025 Recipe Rumble</p>
+    </footer>
+</body>
+</html>

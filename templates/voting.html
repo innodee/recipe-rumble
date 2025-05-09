@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting - Recipe Rumble</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-teal-600 text-white p-4 sticky top-0 z-10 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Recipe Rumble</h1>
+            <nav class="space-x-4">
+                <a href="{{ url_for('index') }}" class="hover:text-teal-200">Home</a>
+                <a href="{{ url_for('submissions') }}" class="hover:text-teal-200">Submissions</a>
+                <a href="{{ url_for('leaderboard') }}" class="hover:text-teal-200">Leaderboard</a>
+                {% if session['role'] == 'admin' %}
+                    <a href="{{ url_for('admin') }}" class="hover:text-teal-200">Admin Dashboard</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}" class="hover:text-teal-200">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 flex-grow">
+        <h2 class="text-3xl font-semibold text-teal-700 mb-6">Voting</h2>
+        <p class="text-gray-600 mb-4">Voting is available in the Submissions tab during the voting period.</p>
+        <a href="{{ url_for('submissions') }}" class="inline-block bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">Go to Submissions</a>
+    </main>
+
+    <footer class="bg-teal-600 text-white p-4 text-center">
+        <p>&copy; 2025 Recipe Rumble</p>
+    </footer>
+</body>
+</html>
