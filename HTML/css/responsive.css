@@ -1,0 +1,1236 @@
+/*-------------------------------------
+
+	Template Name: Mother's Recipe HTML
+	Version: 1.0.0
+	Author: Webstrot 
+---------------------------------------*/
+/*--width 1700 --*/
+@media (max-width: 1700px) {
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 nav ul li .dropdown-items li .sub-dropdown {
+    width: 200px;
+    padding: 12px 0px;
+    top: 51px;
+    left: 50px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 nav ul li .dropdown-items li .sub-dropdown li a {
+    font-size: 11px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 nav ul li .dropdown-items li .sub-dropdown li {
+    padding: 2px 0px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .top-header-wrapper .ps_searc_n_all .ps_header_search {
+    margin-left: 15px;
+  }
+}
+@media (max-width: 1650px) {
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_mega_menu .tab-content .ps_cosumer_menu ul li a {
+    font-size: 14px;
+    padding: 30px 12px;
+    height: 90px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_mega_menu .tab-content .ps_cosumer_menu ul li a span {
+    width: 35px;
+    height: 35px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_mega_menu .tab-content {
+    padding: 30px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-chef-listing-main-wrapper .chef-blog-wrapper {
+    width: 23%;
+  }
+}
+@media (max-width: 1500px) {
+  .food-slider-main-wrapper .banner-wrapper .slider-img img {
+    width: 100%;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption h2 {
+    font-size: 60px;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption p {
+    font-size: 25px;
+    padding-top: 0;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box .pickup-text h4, .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box1 .pickup-text h4,
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box2 .pickup-text h4 {
+    font-size: 35px;
+  }
+  .read-btn {
+    font-size: 24px;
+  }
+  .title-heading {
+    font-size: 50px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today h2 {
+    font-size: 50px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today .title-sec .title-heading {
+    font-size: 30px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .menu-tabs-wrapper .menu-name h3 {
+    font-size: 30px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .product-rate h3 {
+    font-size: 30px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .product-rate span {
+    font-size: 30px;
+  }
+  .custom-btn {
+    font-size: 20px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .btn-sec .custom-btn {
+    font-size: 16px;
+  }
+  .food-features-title-wrapper .title-sec .title-heading {
+    font-size: 30px;
+  }
+  .food-features-title-wrapper h2, .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-text h2 {
+    font-size: 50px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product .feature-text h3 a {
+    font-size: 40px;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-icon span svg {
+    width: 100px;
+    height: 100px;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-text .title-sec .title-heading {
+    font-size: 30px;
+  }
+  .food-footer-main-wrapper .food-footer-content-wrapper .footer-links .footer-title {
+    font-size: 30px;
+  }
+  .food-footer-main-wrapper .food-footer-content-wrapper .footer-links ul li a {
+    font-size: 16px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today {
+    padding-left: 45px;
+    padding-right: 40px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper {
+    margin-top: 50px;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-nav .owl-next {
+    right: -10%;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-nav .owl-prev {
+    left: -10%;
+  }
+  .food-features-title-wrapper:before {
+    height: 13%;
+  }
+  .food-features-title-wrapper {
+    padding: 95px 0px 0px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom {
+    padding: 0px 20px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .blog-sidebar-wrapper .blog-recipe-main-wrapper {
+    width: 46%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-chef-listing-main-wrapper .chef-blog-wrapper .chef-text a {
+    font-size: 25px;
+  }
+}
+/*--width 1400 --*/
+/* width 1440 */
+/*--width 1366 --*/
+@media (max-width: 1366px) {
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .index1-logo {
+    width: 165px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 nav ul li a {
+    padding: 0px 10px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .social-media-icons li + li {
+    margin-left: 3px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .main-menu li + li {
+    margin-left: 30px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .right-logo a img {
+    width: 120px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .left-header-side .input-box button {
+    min-width: 90px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .left-header-side .input-box .locate {
+    width: 225px;
+    font-size: 14px;
+    text-align: right;
+    padding-right: 10px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .right-logo ul {
+    -moz-column-gap: 15px;
+         column-gap: 15px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .right-logo ul .line {
+    padding-right: 15px;
+  }
+}
+/*--width 1199 --*/
+@media (max-width: 1199px) {
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .social-media-icons li .post-btn {
+    width: 130px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .top-header-wrapper .ps_logo a img {
+    width: 100%;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .left-header-side .input-box {
+    width: 66%;
+    padding-left: 25px;
+  }
+  .food-features-title-wrapper {
+    height: 688px;
+  }
+  .food-how-work-main-wrapper:before {
+    bottom: -8%;
+    width: 160px;
+    height: 160px;
+    background-size: cover;
+  }
+  .food-happy-customer-main-wrapper:before {
+    bottom: -8%;
+    width: 160px;
+    height: 160px;
+    background-size: cover;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today .side-img img {
+    width: 40%;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption {
+    padding-top: 24px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product .feature-img {
+    max-width: 275px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product .feature-img img {
+    width: 100%;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product small {
+    width: 85px;
+    height: 85px;
+    padding-top: 20px;
+    font-size: 16px;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-text h2 {
+    font-size: 40px;
+  }
+  .food-footer-main-wrapper .food-footer-content-wrapper {
+    flex-wrap: wrap;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .product-rate {
+    flex-direction: column;
+    row-gap: 12px;
+    align-items: flex-start;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .btn-sec {
+    flex-direction: column;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-item .item .testi-caption img {
+    width: 65px;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-nav .owl-prev {
+    top: 45px;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-nav .owl-next {
+    top: 45px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .menu-tabs-wrapper .menu-tabs .tabs-panel-wrapper .nav-tabs .nav-item .nav-link {
+    padding: 9px;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-item .item .testi-caption h4 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+  .food-how-work-main-wrapper .work-step .step-one .work-text h4 {
+    font-size: 22px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .menu-tabs-wrapper .menu-name h3 {
+    font-size: 24px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .product-rate h3 {
+    font-size: 24px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .product-rate span {
+    font-size: 24px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .right-logo ul {
+    -moz-column-gap: 12px;
+         column-gap: 12px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .right-logo ul .line {
+    padding-right: 12px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .left-header-side .input-box input {
+    padding: 0;
+    padding-left: 12px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .left-header-side .input-box .locate {
+    width: 190px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .left-header-side .input-box {
+    width: 68%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .side-panel-box-wrapper .side-panel-wrapper .side-bar-strip .title-sec .title-heading {
+    font-size: 28px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .side-panel-box-wrapper .side-panel-wrapper .side-bar-strip .title-sec .title-heading:before {
+    height: 10px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .side-panel-box-wrapper .side-panel-wrapper .side-bar-strip .recent-post-box .post-text a {
+    font-size: 16px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .side-panel-box-wrapper .chef-blog-wrapper .chef-text a {
+    font-size: 24px;
+  }
+  .cat label span {
+    font-size: 14px;
+  }
+  .cat label {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .recipe-text .quotes-recipe p {
+    font-size: 18px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .blog-sidebar-wrapper .blog-recipe-main-wrapper .blog-content h5 {
+    font-size: 24px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-chef-listing-main-wrapper .chef-blog-wrapper {
+    width: 31%;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper .get-touch-wrapper .left-contact h2 {
+    font-size: 50px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-product-info {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-product-info .product-sell-details {
+    width: 100%;
+    padding: 0;
+    margin-top: 34px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-product-info .product-sell-wrapper {
+    width: 70%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-realted-product-wrapper .custom-inner-tab-main-wrapper .food-product-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-realted-product-wrapper .custom-inner-tab-main-wrapper .food-product-main-wrapper .product-text {
+    width: 100%;
+    padding: 0;
+    padding-top: 16px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-realted-product-wrapper .custom-inner-tab-main-wrapper .food-product-main-wrapper .product-text p {
+    font-size: 14px;
+  }
+}
+/*--width 1050 --*/
+@media (max-width: 1050px) {
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 nav ul li a span {
+    display: contents;
+    margin-left: 0;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 nav ul li {
+    padding: 0;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 nav ul li a {
+    padding: 36px 8px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .main-menu li + li {
+    margin-left: 18px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .main-menu li a {
+    font-size: 14px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .right-logo ul {
+    -moz-column-gap: 11px;
+         column-gap: 11px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .right-logo ul .line {
+    padding-right: 10px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .left-header-side .menu-bar .main-logo img {
+    width: 88px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 .ps_header_bottom .left-header-side .menu-bar .main-logo {
+    padding: 35px 0px 35px 12px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper {
+    flex-direction: column;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text {
+    width: 100%;
+    padding: 0px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .product-rate {
+    flex-direction: inherit;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .btn-sec {
+    flex-direction: inherit;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-nav .owl-prev {
+    left: -6%;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-nav .owl-next {
+    right: -6%;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today p {
+    font-size: 16px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text p {
+    font-size: 16px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product .feature-img {
+    max-width: 180px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product small {
+    width: 70px;
+    height: 70px;
+    padding-top: 12px;
+    font-size: 15px;
+    top: 0;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product .feature-text {
+    padding: 30px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product .feature-text h3 a {
+    font-size: 30px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product .feature-text p {
+    padding: 15px 0px;
+  }
+  .custom-btn {
+    font-size: 16px;
+    min-width: 180px;
+    height: 50px;
+    line-height: 50px;
+  }
+  .food-footer-main-wrapper .food-footer-content-wrapper {
+    row-gap: 30px;
+  }
+  .food-footer-main-wrapper .food-footer-content-wrapper .footer-links {
+    width: 33%;
+  }
+  .bottom-footer .bottom-footer-wrapper .fotter-right ul li + li {
+    padding-left: 10px;
+  }
+  .bottom-footer .bottom-footer-wrapper .fotter-right ul {
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+    flex-wrap: wrap;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .menu-tabs-wrapper .menu-name h3 {
+    font-size: 20px;
+  }
+}
+/*--width 1024 --*/
+@media (max-width: 1024px) {
+  .sec-title h2 {
+    font-size: 60px !important;
+  }
+  .sec-title h3 {
+    font-size: 36px !important;
+    margin-top: -33px !important;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption h2 {
+    font-size: 56px;
+  }
+  .read-btn {
+    font-size: 22px;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-our-info-main-wrapper {
+    flex-wrap: wrap;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-our-info-main-wrapper .blog-box {
+    width: 49%;
+    margin-bottom: 16px;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-certificate-award-wrapper .delivery-main-wrapper {
+    flex-wrap: wrap;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-certificate-award-wrapper .delivery-main-wrapper .delivery-box {
+    margin-bottom: 20px;
+  }
+}
+/*--width 993 --*/
+@media (max-width: 993px) {
+  .main-header-wrapper1 .sb-main-header1 .menu-item-wrapper3 nav ul li a {
+    padding: 34px 7px;
+  }
+}
+@media (max-width: 991px) {
+  .food-slider-main-wrapper {
+    margin-top: 87px;
+  }
+  .main-header-wrapper1 {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .social-media-icons {
+    padding-top: 6px;
+  }
+  .mobile-logo a img {
+    width: 150px;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption h2 {
+    font-size: 33px;
+    height: 84px;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption h5 {
+    font-size: 22px;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption p {
+    font-size: 18px;
+  }
+  .main-header-wrapper1 {
+    z-index: 9999;
+  }
+  #sidebar .sidebar_logo a img {
+    width: 85px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .menu-tabs-wrapper {
+    flex-flow: column-reverse;
+    align-items: flex-start;
+    row-gap: 18px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper {
+    flex-direction: column;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today {
+    width: 100%;
+  }
+  .food-today-dish-scroll-wrapper:after {
+    background-color: #fffcb7;
+  }
+  .food-today-dish-scroll-wrapper:before {
+    background-color: #fffcb7;
+    z-index: -1;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today#sticky {
+    position: static;
+    top: 0px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today {
+    width: 100%;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .custom-inner-tab-main-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    -moz-column-gap: 30px;
+         column-gap: 30px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper {
+    width: 46%;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-kitchen-grid-wrapper {
+    width: 100%;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box {
+    width: 48%;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box1 {
+    width: 48%;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box2 {
+    width: 48%;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper {
+    row-gap: 30px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product {
+    width: 45%;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper {
+    flex-wrap: wrap;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product.dal-bati {
+    margin-top: 115px;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-nav .owl-prev {
+    left: 0;
+    top: 130px;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-nav .owl-next {
+    right: 0;
+    top: 130px;
+  }
+  .food-today-dish-scroll-wrapper.amma-kitchen:before {
+    background-color: #fffcb7;
+  }
+  .food-how-work-main-wrapper .work-step .step-two {
+    display: none;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-text .title-sec {
+    padding-bottom: 14px;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-text h2 {
+    font-size: 30px;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-icon span svg {
+    width: 90px;
+    height: 90px;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-our-info-main-wrapper .blog-box {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-chef-single-page {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-chef-single-page .chef-photo-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-chef-single-page .about-details-wrapper {
+    width: 100%;
+    padding-left: 0;
+    padding-top: 50px;
+  }
+  .food-inner-banner-wrapper {
+    margin-top: 90px;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-about-service-wrapper .about-service a {
+    font-size: 24px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .side-panel-box-wrapper {
+    width: 50%;
+  }
+  .cat label {
+    width: 45%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .blog-sidebar-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .blog-sidebar-wrapper .blog-recipe-main-wrapper .blog-content ul {
+    flex-wrap: wrap;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .blog-sidebar-wrapper .blog-recipe-main-wrapper .blog-content ul li a {
+    font-size: 14px;
+  }
+  .bottom-footer .bottom-footer-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-cart-main-wrapper .cart-strip-main-wrapper .cart-item span {
+    padding-left: 50px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-cart-main-wrapper .cart-strip-main-wrapper .cart-item {
+    width: 32%;
+    padding-bottom: 16px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-cart-main-wrapper .cart-total-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-chef-single-page .chef-details-wrapper {
+    width: 100%;
+    padding-left: 0;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-chef-listing-main-wrapper .chef-blog-wrapper {
+    width: 45%;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-faq-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-faq-main-wrapper .food-faq-left {
+    padding: 0;
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-faq-main-wrapper .food-faq-sidebar {
+    width: 50%;
+    margin-top: 30px;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper .get-touch-wrapper {
+    flex-wrap: wrap;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper .get-touch-wrapper .left-contact {
+    padding: 40px 0px 0px 0px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .inner-form-box {
+    -moz-column-gap: 6px;
+         column-gap: 6px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .forget-link-box a {
+    font-size: 14px;
+    padding-top: 10px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .inner-form-box label {
+    font-size: 14px;
+  }
+}
+@media (max-width: 767px) {
+  .ps-video-wrapper .watch-video-slider .play {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .footer-links {
+    margin-top: 15px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .social-media-icons ul .login-btn a {
+    min-width: 126px;
+    font-size: 14px;
+    height: 44px;
+    line-height: 45px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .social-media-icons ul .ps_wishlist_iocn {
+    width: 40px;
+    height: 40px;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-img {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+  }
+  .food-footer-main-wrapper .food-footer-content-wrapper .footer-links {
+    width: 48%;
+  }
+  .bottom-footer .bottom-footer-wrapper {
+    flex-direction: column;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption h2 {
+    font-size: 56px;
+    height: 160px;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper {
+    flex-direction: column;
+  }
+  .food-login-main-wrapper {
+    flex-direction: column;
+  }
+  .food-login-main-wrapper .login-img {
+    width: 100%;
+  }
+  .food-login-main-wrapper .login-form-box {
+    width: 100%;
+  }
+  .food-login-main-wrapper .login-img a {
+    transform: translateY(0%);
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-certificate-award-wrapper .title-sec .title-heading {
+    font-size: 35px;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-certificate-award-wrapper .title-sec .title-heading:before {
+    height: 10px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-cart-main-wrapper {
+    max-width: 100%;
+  }
+  .food-inner-page-content-wrapper .contact-details-wrapper {
+    flex-wrap: wrap;
+    z-index: 9;
+  }
+  .food-inner-page-content-wrapper .contact-details-wrapper .contact-box {
+    width: 50%;
+    margin-bottom: 25px;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper .get-touch-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper .get-touch-wrapper .right-contact {
+    position: relative;
+    z-index: 9;
+    margin-top: 30px;
+  }
+  .food-inner-page-content-wrapper .food-recipe-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .food-recipe-main-wrapper .recipe-text {
+    padding-left: 0;
+    padding-top: 40px;
+  }
+  .food-recipe-second-wrapper .recipe-second-wrapper {
+    flex-direction: column;
+  }
+  .food-recipe-second-wrapper .recipe-second-wrapper .recipe-text {
+    padding-left: 0;
+    padding-top: 40px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .tab-content .tab-pane .food-kitchen-grid-wrapper .food-kitchen-main-wrapper {
+    width: 45%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .tab-content .tab-pane .custom-inner-tab-main-wrapper .food-product-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .tab-content .tab-pane .custom-inner-tab-main-wrapper .food-product-main-wrapper .product-text {
+    width: 100%;
+    padding: 0;
+    padding-top: 30px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .tab-content .tab-pane .custom-inner-tab-main-wrapper .food-product-main-wrapper .product-text p {
+    font-size: 14px;
+  }
+  .food-inner-page-content-wrapper .text-wrapper p {
+    font-size: 16px;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper .get-touch-wrapper .left-contact {
+    padding: 40px 20px 0px 20px;
+  }
+  #days {
+    font-size: 60px;
+  }
+  #hours {
+    font-size: 60px;
+  }
+  #minutes {
+    font-size: 60px;
+  }
+  #seconds {
+    font-size: 50px;
+  }
+  .coming-soon-wrapper-strip .food-coming-soon-main-wrapper .coming-soon-wrapper ul li span {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 15px;
+  }
+}
+@media (max-width: 680px) {
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box {
+    width: 100%;
+    height: auto;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box1 {
+    width: 100%;
+    height: auto;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box2 {
+    width: 100%;
+    height: auto;
+  }
+  .food-how-work-main-wrapper .work-step {
+    flex-wrap: wrap;
+    row-gap: 30px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today {
+    height: 700px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today {
+    padding-left: 30px;
+    padding-right: 22px;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-about-service-wrapper {
+    flex-direction: column;
+    row-gap: 40px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .side-panel-box-wrapper {
+    width: 70%;
+  }
+  .food-inner-banner-wrapper .inner-caption h3 {
+    font-size: 40px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-realted-product-wrapper .custom-inner-tab-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-realted-product-wrapper .custom-inner-tab-main-wrapper .food-product-main-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-faq-main-wrapper .food-faq-sidebar {
+    width: 70%;
+  }
+}
+@media (max-width: 640px) {
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product {
+    width: 70%;
+    margin-bottom: 0px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product.dal-bati {
+    margin-top: 133px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product.ma-dal {
+    margin-top: 133px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper {
+    width: 100%;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-kitchen-grid-wrapper {
+    flex-direction: column;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-kitchen-grid-wrapper .food-kitchen-main-wrapper {
+    width: 100%;
+  }
+  .food-today-dish-scroll-wrapper.amma-kitchen .today-scroll-wrapper .right-today .tab-content .tab-pane .food-kitchen-grid-wrapper .food-kitchen-main-wrapper {
+    width: 100%;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption h2 {
+    font-size: 40px;
+    height: 105px;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box .pickup-text h4, .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box1 .pickup-text h4, .food-pickup-main-wrapper .food-pickup-box-wrapper .pickup-box2 .pickup-text h4 {
+    font-size: 30px;
+  }
+  .title-heading {
+    font-size: 40px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today h2 {
+    font-size: 40px;
+    padding-top: 12px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today .input-box {
+    margin-top: 30px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today p {
+    padding: 30px 0px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text {
+    padding-top: 15px;
+  }
+  .food-features-title-wrapper h2, .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-text h2 {
+    font-size: 40px;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper {
+    margin-top: -50px;
+  }
+  .food-features-main-wrapper {
+    padding: 0;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-item .item .testi-caption h4 {
+    font-size: 18px;
+    line-height: 25px;
+  }
+  .food-happy-customer-main-wrapper:before {
+    bottom: -17%;
+    width: 140px;
+    height: 140px;
+    left: 40%;
+  }
+  .food-how-work-main-wrapper:before {
+    bottom: -6%;
+    width: 140px;
+    height: 150px;
+    left: 40%;
+  }
+  .food-features-title-wrapper:before {
+    top: 0;
+  }
+  .food-features-title-wrapper .title-sec {
+    padding-top: 0;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left {
+    flex-direction: column;
+    align-items: center;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-text {
+    text-align: center;
+    padding-top: 15px;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-icon span svg {
+    width: 50px;
+    height: 50px;
+  }
+  .food-work-with-us-main-wrapper .food-work-wrapper .food-work-right .custom-btn {
+    margin-top: 20px;
+  }
+  .food-pickup-main-wrapper .food-pickup-box-wrapper {
+    margin-top: 0;
+  }
+  .food-slider-main-wrapper:after {
+    width: 145px;
+    height: 175px;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-img {
+    max-width: 365px;
+  }
+  .food-slider-main-wrapper:before {
+    width: 155px;
+    height: 153px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo ul .signup a {
+    width: 100px;
+    height: 50px;
+    line-height: 50px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo ul li a {
+    font-size: 15px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo ul {
+    -moz-column-gap: 12px;
+         column-gap: 12px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo ul .line {
+    padding-right: 12px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo ul li a span svg {
+    width: 22px;
+    height: 22px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .feature-recipe-wrapper .recipe-blog-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .feature-recipe-wrapper .recipe-blog-main-wrapper .blog-recipe {
+    margin-bottom: 25px;
+  }
+}
+/*---width 580--*/
+@media (max-width: 580px) {
+  .sec-title h2 {
+    font-size: 36px !important;
+  }
+  .sec-title h3 {
+    font-size: 22px !important;
+    margin-top: -17px !important;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .blog-sidebar-wrapper .blog-recipe-main-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-chef-listing-main-wrapper .chef-blog-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper .get-touch-wrapper .left-contact h2 {
+    font-size: 40px;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper .get-touch-wrapper .left-contact p {
+    font-size: 18px;
+    max-width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-recipe-category-wrapper .recipe-category {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .tab-content .tab-pane .custom-inner-tab-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .tab-content .tab-pane .custom-inner-tab-main-wrapper .food-product-main-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .tab-content .tab-pane .food-kitchen-grid-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .tab-content .tab-pane .food-kitchen-grid-wrapper .food-kitchen-main-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .right-today .menu-tabs-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-faq-main-wrapper .food-faq-sidebar {
+    width: 100%;
+  }
+  .food-inner-banner-wrapper .inner-caption h3 {
+    font-size: 33px;
+  }
+}
+@media (max-width: 499px) {
+  .coming-soon-wrapper-strip .food-coming-soon-main-wrapper .coming-soon-wrapper ul {
+    flex-direction: column;
+    row-gap: 20px;
+  }
+  .food-inner-page-content-wrapper .food-contact-form-wrapper:before {
+    width: 394px;
+  }
+  .overlay-img {
+    width: 298px;
+  }
+  .food-slider-main-wrapper .banner-wrapper .slider-caption p {
+    font-size: 25px;
+    padding-top: 69px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .right-today .tab-content .tab-pane .food-product-main-wrapper .product-text .btn-sec .value-produt form input {
+    width: 65px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .input-group-addon {
+    left: 92%;
+  }
+}
+/*-- width 480 --*/
+@media (max-width: 480px) {
+  .food-how-work-main-wrapper:after {
+    height: 12%;
+  }
+  .food-how-work-main-wrapper:before {
+    width: 120px;
+    height: 120px;
+  }
+  .food-how-work-main-wrapper .work-step {
+    margin-top: 50px;
+  }
+  .food-how-work-main-wrapper {
+    padding: 40px 0px 100px;
+  }
+  .food-features-title-wrapper {
+    height: 585px;
+  }
+  .food-happy-customer-main-wrapper .food-testimonial-wrapper .testimonial-slider .owl-item .item .testi-caption h4 {
+    font-size: 14px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today {
+    height: auto;
+  }
+  .food-features-main-wrapper .features-product-main-wrapper .feature-product {
+    width: 85%;
+  }
+  .title-heading {
+    font-size: 31px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today .title-sec .title-heading {
+    padding-top: 30px;
+  }
+  .food-features-title-wrapper h2, .food-work-with-us-main-wrapper .food-work-wrapper .food-work-left .work-text h2 {
+    font-size: 30px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today h2 {
+    font-size: 34px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .recipe-text .comment-box-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .recipe-text .comment-box-wrapper .comment-text {
+    width: 100%;
+    padding-left: 0;
+    text-align: center;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .recipe-text .comment-box-wrapper .comment-text .user-name-wrapper .name-user {
+    width: 100%;
+    padding-top: 16px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .side-panel-box-wrapper {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-cart-main-wrapper .cart-strip-main-wrapper .cart-item {
+    width: 50%;
+  }
+  .food-footer-main-wrapper .food-footer-content-wrapper .footer-links {
+    width: 100%;
+  }
+  #container {
+    width: 315px !important;
+  }
+  .grid-item {
+    width: 315px !important;
+  }
+  .food-inner-page-content-wrapper .food-service-main-wrapper {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .food-service-main-wrapper .service {
+    margin-bottom: 40px;
+  }
+}
+/*-- width 450 --*/
+@media (max-width: 450px) {
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .mobile-logo a img {
+    width: 115px;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today .side-img {
+    flex-direction: column;
+  }
+  .food-today-dish-scroll-wrapper .today-scroll-wrapper .left-today .side-img img {
+    width: 100%;
+    padding: 22px 0px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-cart-main-wrapper .cart-strip-main-wrapper .cart-item p {
+    padding-left: 0;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-cart-main-wrapper .cart-strip-main-wrapper .cart-item {
+    width: 100%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .food-cart-main-wrapper .cart-strip-main-wrapper .cart-item span {
+    padding-left: 0;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .recipe-text .checkout-form {
+    flex-direction: column;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .recipe-text .checkout-form .food-form-first-wrapper {
+    padding-bottom: 40px;
+  }
+  .coming-soon-wrapper-strip .food-coming-soon-main-wrapper .coming-soon-wrapper ul li {
+    margin-bottom: 20px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .mobil-left-side .toggle-main-wrapper span svg {
+    width: 24px;
+    height: 24px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .mobil-left-side {
+    -moz-column-gap: 10px;
+         column-gap: 10px;
+    padding-left: 3px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo ul .search-btn .search-open {
+    right: -108px;
+  }
+  .food-inner-page-content-wrapper .chef-single-page .food-faq-main-wrapper .food-faq-sidebar .side-panel-wrapper .title-sec .title-heading {
+    font-size: 26px;
+  }
+}
+@media (max-width: 380px) {
+  .food-inner-page-content-wrapper .contact-details-wrapper {
+    flex-direction: column;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo ul .signup a {
+    width: 74px;
+    height: 41px;
+    line-height: 42px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo {
+    padding-right: 3px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .mobile-logo a img {
+    width: 100px;
+  }
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .right-logo ul .search-btn span svg {
+    width: 16px;
+    height: 16px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .input-group-addon {
+    left: 90%;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .side-panel-box-wrapper .side-panel-wrapper .side-bar-strip .price-range-slider .range-value {
+    display: none;
+  }
+}
+/*-- width 360 --*/
+@media (max-width: 360px) {
+  .main-header-wrapper1 .sb-main-header1 .mobile-menu-wrapper .social-media-icons ul .login-btn .user-text {
+    right: -46px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-infor-tabs .tab-content .tab-pane ul li a {
+    font-weight: 600;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-product-info .product-sell-details .categories ul {
+    -moz-column-gap: 0px;
+         column-gap: 0px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-product-info .product-sell-details .categories ul li {
+    font-size: 14px;
+    line-height: 16px;
+  }
+  .food-inner-page-content-wrapper .inner-page-content .product-panel-wrapper .food-product-info .product-sell-details .categories {
+    -moz-column-gap: 9px;
+         column-gap: 9px;
+  }
+  .overlay-img {
+    left: 10px;
+    width: 297px;
+    font-size: 17px;
+    padding: 22px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .input-group-addon {
+    left: 88%;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .inner-form-box label {
+    font-size: 12px;
+    line-height: 14px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .forget-link-box a {
+    font-size: 12px;
+    line-height: 14px;
+  }
+}
+/*--width 320 --*/
+@media (max-width: 360px) {
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .inner-form-box label {
+    font-size: 11px;
+    line-height: 14px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .forget-link-box a {
+    font-size: 11px;
+    line-height: 14px;
+    padding-top: 15px;
+  }
+  .food-login-main-wrapper .login-form-box .login-form-wrapper .login-tabs .tab-content .form-group .inner-form-box {
+    -moz-column-gap: 4px;
+         column-gap: 4px;
+  }
+}/*# sourceMappingURL=responsive.css.map */

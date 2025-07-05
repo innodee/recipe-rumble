@@ -1,0 +1,194 @@
+ <!DOCTYPE html>
+<!-- 
+   Template Name: Mother's Recipe HTML
+   Version: 1.0.0
+   Author: Webstrot 
+   
+   -->
+<!--[if IE 8]> 
+<html lang="en" class="ie8 no-js">
+   <![endif]-->
+   <!--[if IE 9]> 
+   <html lang="en" class="ie9 no-js">
+      <![endif]-->
+      <!--[if !IE]><!-->
+      <html lang="zxx" dir="ltr">
+         <!--[endif]-->
+   <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Mother's Recipe HTML</title>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+       <!-- fav icon link  -->
+       <link rel="icon" href="images/fav.png" type="image/x-icon" />
+      <!--Template style -->
+      <link rel="stylesheet" type="text/css" href="css/animate.css" />
+      <link rel="stylesheet" type="text/css" href="css/animate.min.css" />
+      <link rel="stylesheet" type="text/css" href="css/fonts.css" />
+      <link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
+      <link rel="stylesheet" type="text/css" href="css/custom-select.css" />
+      <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+      <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css" />
+      <link rel="stylesheet" type="text/css" href="css/owl.theme.default.min.css" />
+      <link rel="stylesheet" type="text/css" href="css/magnific-popup.css" />
+      <link rel="stylesheet" type="text/css" href="css/filter.css" />
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+      <link rel="stylesheet" type="text/css" href="css/style.css" />
+      <link rel="stylesheet" type="text/css" href="css/responsive.css" />
+       
+   </head>
+   <body>
+      <!-- help-fix -->
+      <div id="preloader">
+         <div id="status">
+            <img src="images/loader.gif" id="preloader_image" alt="loader">
+         </div>
+      </div>
+      <!-- top to return -->
+
+     
+      <div class="food-login-main-wrapper">
+         <div class="login-img">
+            <a href="index.html"> <img src="images/login-logo.png" alt="logo"> </a>
+         </div>
+         <div class="login-form-box">
+            <div class="login-form-wrapper">
+               <div class="login-tabs">
+                  <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+                     <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="descrip-tab" data-bs-toggle="tab" data-bs-target="#descrip-tab-pane" type="button" role="tab" aria-controls="descrip-tab-pane" aria-selected="true"> Login </button>
+                     </li>
+                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="review-tab-pane" aria-selected="false"> Signup </button>
+                     </li>
+                  </ul>
+                  <!--  -->
+                  <div class="tab-content" id="myTabContent">
+                     <div class="tab-pane fade active show" id="descrip-tab-pane" role="tabpanel" aria-labelledby="descrip-tab" tabindex="0">
+                        <form action="/">
+                           <div class="google-btn">
+                              <a href="javascript:;"> <img src="images/google-icon.png" alt="google-icon" class="img-fluid"> Sign up with google</a>
+                              <span>Or</span>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-12 col-12">
+                                 <label>
+                                    Email
+                                 </label>
+                                 <input type="email" class="form-control require" required="" placeholder="Email Address">
+                              </div>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-12 col-12">
+                                 <label>
+                                    Password
+                                 </label>
+                                 <input type="password" class="form-control require" required="" placeholder="Password" id="passInput1">
+                                 <span class="input-group-addon" role="button" title="veiw password" id="passBtn1">
+                                   <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
+                                 </span>
+                              </div>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-lg-6 col-md-6  col-sm-6 col-6">
+                                  <div class="inner-form-box">
+                                    <input type="checkbox" id="check" name="check" value="check" class="remember-input">
+                                    <label for="check"> Remember Me</label>
+                                  </div>
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                 <div class="forget-link-box">
+                                    <a href="javascript:;">Forget Password ?</a>
+                                 </div>
+                              </div>
+                           </div>
+                           <button type="submit" class="submitForm custom-btn">Login</button>
+                           <!-- <p>Don’t have an account <a href="javascript:;">Sign in</a> </p> -->
+                        </form>
+                     </div>
+                     <div class="tab-pane fade" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
+                        <form action="/">
+                           <div class="google-btn">
+                              <a href="javascript:;"><img src="images/google-icon.png" alt="google-icon" class="img-fluid"> Sign up with google</a>
+                              <span>Or</span>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-12 col-12">
+                                 <label>
+                                    User Name
+                                 </label>
+                                 <input type="text" class="form-control require" required="" placeholder="Enter Name">
+                              </div>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-12 col-12">
+                                 <label>
+                                    Last Name
+                                 </label>
+                                 <input type="text" class="form-control require"  required="" placeholder="Enter Last Name">
+                              </div>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-12 col-12">
+                                 <label>
+                                    Email
+                                 </label>
+                                 <input type="email" class="form-control require" required="" placeholder="Email Address">
+                              </div>
+                           </div>
+                           <div class="form-group row">
+                              <div class="col-md-12 col-12">
+                                 <label>
+                                    Password
+                                 </label>
+                                 <input type="password" class="form-control require" required="" placeholder="Password" id="passInput2">
+                                 <span class="input-group-addon" role="button" title="veiw password" id="passBtn2">
+                                   <i class="fa fa-eye fa-fw" aria-hidden="true"></i>
+                                 </span>
+                              </div>
+                           </div>
+                           <button type="submit" class="submitForm custom-btn">Sign up</button>
+                           <!-- <p>Already have an account? <a href="javascript:;">Login</a> </p> -->
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--  -->
+ 
+      
+     
+      <!-- footer section end -->
+      <!-- Side Panel -->
+      <script src="js/jquery-3.6.0.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/wow.js"></script>
+      <script src="js/owl.carousel.min.js"></script>
+      <script src="js/jquery-ui.min.js"></script>
+      <script src="js/sticky.js"></script>
+      <script src="js/filter.js"></script>
+      <script src="js/contact_form.js"></script>
+      <script src="js/isotope.pkgd.min.js"></script>
+      <script src="js/jquery.magnific-popup.js"></script>
+      <script src="js/custom.js"></script>
+        
+      <!-- hide and show functionality js  start -->
+      <script>
+               const PassBtn1 = document.querySelector('#passBtn1');
+      PassBtn1.addEventListener('click', () => {
+         const input = document.querySelector('#passInput1');
+         input.getAttribute('type') === 'password' ? input.setAttribute('type', 'text') : input.setAttribute('type', 'password');
+      }); 
+      </script>
+      <script>
+               const PassBtn2 = document.querySelector('#passBtn2');
+      PassBtn2.addEventListener('click', () => {
+         const input = document.querySelector('#passInput2');
+         input.getAttribute('type') === 'password' ? input.setAttribute('type', 'text') : input.setAttribute('type', 'password');
+      }); 
+</script>
+   </body>
+</html>
