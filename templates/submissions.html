@@ -4,74 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submissions - Recipe Rumble</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <style>
+        .timer-pulse {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        .submission-card img {
+            max-height: 250px;
+            object-fit: cover;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-    <header class="bg-teal-600 text-white p-4 sticky top-0 z-10 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Recipe Rumble</h1>
-            <nav class="space-x-4">
-                <a href="{{ url_for('index') }}" class="hover:text-teal-200">Home</a>
-                <a href="{{ url_for('submissions') }}" class="hover:text-teal-200">Submissions</a>
-                <a href="{{ url_for('leaderboard') }}" class="hover:text-teal-200">Leaderboard</a>
-                {% if user['role'] == 'admin' %}
-                    <a href="{{ url_for('admin') }}" class="hover:text-teal-200">Admin Dashboard</a>
-                {% endif %}
-                <a href="{{ url_for('logout') }}" class="hover:text-teal-200">Logout</a>
-            </nav>
+<body class="d-flex flex-column vh-100 bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="{{ url_for('index') }}">Recipe Rumble</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('submissions') }}">Submissions <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+                    </li>
+                    {% if user['role'] == 'admin' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="container mx-auto p-6 flex-grow">
-        <h2 class="text-3xl font-semibold text-teal-700 mb-6">Welcome, {{ user['username'] }} (Points: {{ user['points'] }})</h2>
+    <main class="container py-4 flex-grow-1">
+        <h2 class="h2 font-weight-semibold text-primary mb-3">Welcome, {{ user['username'] }} <span class="text-muted small">(Points: {{ user['points'] }})</span></h2>
         
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for message in messages %}
-                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded" role="alert">
+                {% for category, message in messages %}
+                    {% set alert_type = 'danger' %}
+                    {% if category == 'success' %}{% set alert_type = 'success' %}{% endif %}
+                    <div class="alert alert-{{ alert_type }} alert-dismissible fade show" role="alert">
                         {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
-        <h3 class="text-2xl font-semibold text-teal-600 mb-4">Submissions{% if recipe %} for {{ recipe['title'] }}{% endif %}</h3>
+        <h3 class="h3 font-weight-semibold text-secondary mb-3">Submissions{% if recipe %} for <span class="text-info">{{ recipe['title'] }}</span>{% endif %}</h3>
+
         {% if recipe and status != 'inactive' %}
-            <p class="text-teal-600 font-semibold mb-4">
+            <p class="text-info font-weight-semibold mb-3">
                 <strong>{% if status == 'submission' %}Submission{% else %}Voting{% endif %} Time Remaining:</strong> 
-                <span id="timer" data-timer="{{ recipe['posted_at'] | safe }}" class="inline-block bg-teal-100 px-2 py-1 rounded animate-pulse">Loading...</span>
+                <span id="timer" data-timer="{{ recipe['posted_at'] | safe }}" class="badge badge-pill badge-light text-info p-2 timer-pulse">Loading...</span>
             </p>
+
             {% if user_voted %}
-                <p class="text-green-600 mb-4">You have already voted for this recipe.</p>
+                <div class="alert alert-success mb-3"><i class="fa fa-check-circle"></i> You have already voted for this recipe.</div>
             {% elif user['role'] == 'admin' %}
-                <p class="text-gray-600 mb-4">Admins cannot vote.</p>
+                <div class="alert alert-warning mb-3"><i class="fa fa-info-circle"></i> Admins cannot vote.</div>
             {% endif %}
-            <div id="submissions-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <div id="submissions-container" class="row">
                 {% for submission in submissions %}
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                        <p class="text-gray-700 mb-2"><strong>Submission ID:</strong> {{ submission['submission_id'] }}</p>
-                        {% if submission['image_base64'] %}
-                            <img src="data:image/jpeg;base64,{{ submission['image_base64'] }}" alt="Submission" class="w-full max-w-xs rounded-lg mb-4">
-                        {% endif %}
-                        {% if not user_voted and user['role'] != 'admin' %}
-                            {% if status == 'voting' %}
-                                <a href="{{ url_for('vote', submission_id=submission['submission_id']) }}" class="inline-block bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">Vote</a>
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm submission-card">
+                            {% if submission['image_base64'] %}
+                                <img src="data:image/jpeg;base64,{{ submission['image_base64'] }}" alt="Submission {{ submission['submission_id'] }}" class="card-img-top">
                             {% else %}
-                                <span class="inline-block text-gray-500 px-4 py-2">Vote (available during voting period)</span>
+                                <div class="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 250px;">
+                                    <span class="h3">No Image</span>
+                                </div>
                             {% endif %}
-                        {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <p class="card-text small text-muted mb-2">Submission ID: {{ submission['submission_id'] }}</p>
+                                {% if not user_voted and user['role'] != 'admin' %}
+                                    <div class="mt-auto"> {# Pushes button to the bottom if card body is taller #}
+                                    {% if status == 'voting' %}
+                                        <a href="{{ url_for('vote', submission_id=submission['submission_id']) }}" class="btn btn-primary btn-block"><i class="fa fa-thumbs-up"></i> Vote</a>
+                                    {% else %}
+                                        <button class="btn btn-outline-secondary btn-block" disabled>Vote (during voting period)</button>
+                                    {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
+                {% else %} {# Added else for the loop in case there are no submissions #}
+                <div class="col-12">
+                    <p class="text-muted">No submissions yet for this recipe.</p>
+                </div>
                 {% endfor %}
             </div>
         {% else %}
-            <p class="text-gray-600">No active recipe at the moment.</p>
+            <p class="text-muted">No active recipe or submission period is not active.</p>
         {% endif %}
     </main>
 
-    <footer class="bg-teal-600 text-white p-4 text-center">
-        <p>&copy; 2025 Recipe Rumble</p>
+    <footer class="bg-dark text-white p-3 text-center mt-auto">
+        <p class="mb-0">&copy; 2025 Recipe Rumble</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
     {% if recipe and status != 'inactive' %}
         <script>
             document.addEventListener('DOMContentLoaded', function() {
