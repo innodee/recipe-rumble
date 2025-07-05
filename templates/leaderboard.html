@@ -25,7 +25,8 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard <span class="sr-only">(current)</span></a>
                     </li>
-                    {% if session.get('role') == 'admin' %}
+
+                    {% if user['role'] == 'admin' %} {# Assuming 'user' is available, adjust if it's 'session' #}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard</a>
                     </li>

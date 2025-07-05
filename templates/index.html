@@ -35,7 +35,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
                     </li>
-                    {% if session.get('role') == 'admin' %}
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard</a>
                     </li>
@@ -49,9 +49,9 @@
     </nav>
 
     <main class="container py-4 flex-grow-1">
-        {% if user %}
-        <h2 class="h2 font-weight-semibold text-primary mb-4">Welcome, {{ user.username }} <span class="text-muted small">(Points: {{ user.points }})</span></h2>
-        {% endif %}
+
+        <h2 class="h2 font-weight-semibold text-primary mb-4">Welcome, {{ user['username'] }} <span class="text-muted small">(Points: {{ user['points'] }})</span></h2>
+
         
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -87,15 +87,14 @@
                             <span id="timer" data-timer="{{ recipe['posted_at'] | safe }}" class="badge badge-pill badge-light text-info p-2 timer-pulse">Loading...</span>
                         </p>
                     {% endif %}
-                    {% if session.get('role') == 'admin' %}
+
+                    {% if user['role'] == 'admin' %}
                         <div class="mt-3">
                             <a href="{{ url_for('edit_recipe', recipe_id=recipe['id']) }}" class="btn btn-sm btn-outline-info mr-2">Edit</a>
                             <a href="{{ url_for('delete_recipe', recipe_id=recipe['id']) }}" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-outline-danger">Delete</a>
                         </div>
                     {% endif %}
-                    {# Assuming 'user' object IS available in this specific route's context for 'user_submitted' and welcome message #}
-                    {# If 'user' object is not guaranteed, 'user_submitted' would also need to come from session or a different check #}
-                    {% if user and not user_submitted and session.get('role') != 'admin' %}
+                    {% if not user_submitted and user['role'] != 'admin' %}
                         <h4 class="h5 font-weight-semibold text-info mt-3">Submit Your Recipe Image</h4>
                         <form method="post" enctype="multipart/form-data" action="{{ url_for('submit_image', recipe_id=recipe['id']) }}" class="mt-2">
                             <div class="form-group">

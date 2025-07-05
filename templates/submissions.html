@@ -39,7 +39,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
                     </li>
-                    {% if session.get('role') == 'admin' %}
+
+                    {% if user['role'] == 'admin' %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard</a>
                     </li>
@@ -53,10 +54,9 @@
     </nav>
 
     <main class="container py-4 flex-grow-1">
-        {% if user %}
-        <h2 class="h2 font-weight-semibold text-primary mb-3">Welcome, {{ user.username }} <span class="text-muted small">(Points: {{ user.points }})</span></h2>
-        {% endif %}
-        
+
+        <h2 class="h2 font-weight-semibold text-primary mb-3">Welcome, {{ user['username'] }} <span class="text-muted small">(Points: {{ user['points'] }})</span></h2>
+       
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -80,9 +80,9 @@
                 <span id="timer" data-timer="{{ recipe['posted_at'] | safe }}" class="badge badge-pill badge-light text-info p-2 timer-pulse">Loading...</span>
             </p>
 
-            {% if user_voted %} {# Assumes user_voted is passed to context by the route #}
+            {% if user_voted %}
                 <div class="alert alert-success mb-3"><i class="fa fa-check-circle"></i> You have already voted for this recipe.</div>
-            {% elif session.get('role') == 'admin' %}
+            {% elif user['role'] == 'admin' %}
                 <div class="alert alert-warning mb-3"><i class="fa fa-info-circle"></i> Admins cannot vote.</div>
             {% endif %}
 
@@ -99,8 +99,7 @@
                             {% endif %}
                             <div class="card-body d-flex flex-column">
                                 <p class="card-text small text-muted mb-2">Submission ID: {{ submission['submission_id'] }}</p>
-                                {# Assumes user_voted is passed to context by the route #}
-                                {% if not user_voted and session.get('role') != 'admin' %}
+                                {% if not user_voted and user['role'] != 'admin' %}
                                     <div class="mt-auto"> {# Pushes button to the bottom if card body is taller #}
                                     {% if status == 'voting' %}
                                         <a href="{{ url_for('vote', submission_id=submission['submission_id']) }}" class="btn btn-primary btn-block"><i class="fa fa-thumbs-up"></i> Vote</a>
