@@ -4,120 +4,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Recipe Rumble</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-    <header class="bg-teal-600 text-white p-4 sticky top-0 z-10 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Recipe Rumble</h1>
-            <nav class="space-x-4">
-                <a href="{{ url_for('index') }}" class="hover:text-teal-200">Home</a>
-                <a href="{{ url_for('submissions') }}" class="hover:text-teal-200">Submissions</a>
-                <a href="{{ url_for('leaderboard') }}" class="hover:text-teal-200">Leaderboard</a>
-                <a href="{{ url_for('admin') }}" class="hover:text-teal-200">Admin Dashboard</a>
-                <a href="{{ url_for('logout') }}" class="hover:text-teal-200">Logout</a>
-            </nav>
+<body class="d-flex flex-column vh-100 bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="{{ url_for('index') }}">Recipe Rumble</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('submissions') }}">Submissions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+                    </li>
+                    {% if session.get('role') == 'admin' %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard <span class="sr-only">(current)</span></a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="container mx-auto p-6 flex-grow">
-        <h2 class="text-3xl font-semibold text-teal-700 mb-6">Admin Dashboard</h2>
+    <main class="container py-4 flex-grow-1">
+        <h2 class="h2 font-weight-semibold text-primary mb-4">Admin Dashboard</h2>
         
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for message in messages %}
-                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded" role="alert">
+                {% for category, message in messages %}
+                    {% set alert_type = 'danger' %}
+                    {% if category == 'success' %}{% set alert_type = 'success' %}{% endif %}
+                    <div class="alert alert-{{ alert_type }} alert-dismissible fade show" role="alert">
                         {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
-        <div class="flex space-x-4 mb-6">
-            <a href="{{ url_for('admin', tab='post_recipe') }}" class="px-4 py-2 {% if active_tab == 'post_recipe' %}bg-teal-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} rounded hover:bg-teal-600 hover:text-white transition">Post Recipe</a>
-            <a href="{{ url_for('admin', tab='view_submissions') }}" class="px-4 py-2 {% if active_tab == 'view_submissions' %}bg-teal-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} rounded hover:bg-teal-600 hover:text-white transition">View Submissions</a>
-            <a href="{{ url_for('admin', tab='manage_users') }}" class="px-4 py-2 {% if active_tab == 'manage_users' %}bg-teal-500 text-white{% else %}bg-gray-200 text-gray-700{% endif %} rounded hover:bg-teal-600 hover:text-white transition">Manage Users</a>
-        </div>
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'post_recipe' %}active{% endif %}" href="{{ url_for('admin', tab='post_recipe') }}">Post Recipe</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'view_submissions' %}active{% endif %}" href="{{ url_for('admin', tab='view_submissions') }}">View Submissions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'manage_users' %}active{% endif %}" href="{{ url_for('admin', tab='manage_users') }}">Manage Users</a>
+            </li>
+        </ul>
 
         {% if active_tab == 'post_recipe' %}
             {% if active_recipe %}
-                <p class="text-gray-600 mb-4">An active recipe is currently posted: {{ active_recipe['title'] }}</p>
+                <div class="alert alert-info">An active recipe is currently posted: <strong>{{ active_recipe['title'] }}</strong></div>
             {% else %}
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-semibold text-teal-600 mb-4">Post New Recipe</h3>
-                    <form method="post" enctype="multipart/form-data" action="{{ url_for('admin', tab='post_recipe') }}">
-                        <div class="mb-4">
-                            <label for="title" class="block text-gray-700">Title:</label>
-                            <input type="text" name="title" id="title" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        </div>
-                        <div class="mb-4">
-                            <label for="ingredients" class="block text-gray-700">Ingredients:</label>
-                            <textarea name="ingredients" id="ingredients" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
-                        </div>
-                        <div class="mb-4">
-                            <label for="instructions" class="block text-gray-700">Instructions:</label>
-                            <textarea name="instructions" id="instructions" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"></textarea>
-                        </div>
-                        <div class="mb-4">
-                            <label for="image" class="block text-gray-700">Image (optional):</label>
-                            <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                        </div>
-                        <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">Post Recipe</button>
-                    </form>
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title h4 text-info mb-3">Post New Recipe</h3>
+                        <form method="post" enctype="multipart/form-data" action="{{ url_for('admin', tab='post_recipe') }}">
+                            <div class="form-group">
+                                <label for="title">Title:</label>
+                                <input type="text" name="title" id="title" required class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="ingredients">Ingredients:</label>
+                                <textarea name="ingredients" id="ingredients" required class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="instructions">Instructions:</label>
+                                <textarea name="instructions" id="instructions" required class="form-control" rows="5"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Image (optional):</label>
+                                <input type="file" name="image" id="image" accept="image/*" class="form-control-file">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Post Recipe</button>
+                        </form>
+                    </div>
                 </div>
             {% endif %}
         {% elif active_tab == 'view_submissions' %}
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-semibold text-teal-600 mb-4">All Submissions</h3>
-                {% if submissions %}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {% for submission in submissions %}
-                            <div class="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-                                <p class="text-gray-700"><strong>ID:</strong> {{ submission['submission_id'] }}</p>
-                                <p class="text-gray-700"><strong>Recipe:</strong> {{ submission['title'] }}</p>
-                                <p class="text-gray-700"><strong>User:</strong> {{ submission['username'] }}</p>
-                                <p class="text-gray-700"><strong>Submitted:</strong> {{ submission['submitted_at'] }}</p>
-                                {% if submission['image_base64'] %}
-                                    <img src="data:image/jpeg;base64,{{ submission['image_base64'] }}" alt="Submission" class="w-full max-w-xs rounded-lg mt-2">
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <p class="text-gray-600">No submissions yet.</p>
-                {% endif %}
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title h4 text-info mb-3">All Submissions</h3>
+                    {% if submissions %}
+                        <div class="row">
+                            {% for submission in submissions %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card h-100">
+                                        {% if submission['image_base64'] %}
+                                            <img src="data:image/jpeg;base64,{{ submission['image_base64'] }}" alt="Submission {{ submission['submission_id'] }}" class="card-img-top" style="max-height: 200px; object-fit: cover;">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title small">ID: {{ submission['submission_id'] }}</h5>
+                                            <p class="card-text mb-1"><small><strong>Recipe:</strong> {{ submission['title'] }}</small></p>
+                                            <p class="card-text mb-1"><small><strong>User:</strong> {{ submission['username'] }}</small></p>
+                                            <p class="card-text"><small><strong>Submitted:</strong> {{ submission['submitted_at'] }}</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No submissions yet.</p>
+                    {% endif %}
+                </div>
             </div>
         {% elif active_tab == 'manage_users' %}
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h3 class="text-xl font-semibold text-teal-600 mb-4">Manage Users</h3>
-                {% if users %}
-                    <table class="w-full table-auto">
-                        <thead>
-                            <tr class="bg-teal-100">
-                                <th class="px-4 py-2 text-left text-teal-700">Username</th>
-                                <th class="px-4 py-2 text-left text-teal-700">Role</th>
-                                <th class="px-4 py-2 text-left text-teal-700">Points</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for user in users %}
-                                <tr class="hover:bg-teal-50 transition">
-                                    <td class="border px-4 py-2">{{ user['username'] }}</td>
-                                    <td class="border px-4 py-2">{{ user['role'] }}</td>
-                                    <td class="border px-4 py-2">{{ user['points'] }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    <p class="text-gray-600">No users found.</p>
-                {% endif %}
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title h4 text-info mb-3">Manage Users</h3>
+                    {% if users %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Role</th>
+                                        <th>Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                        <tr>
+                                            <td>{{ user['username'] }}</td>
+                                            <td>{{ user['role'] }}</td>
+                                            <td>{{ user['points'] }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No users found.</p>
+                    {% endif %}
+                </div>
             </div>
         {% endif %}
     </main>
 
-    <footer class="bg-teal-600 text-white p-4 text-center">
-        <p>&copy; 2025 Recipe Rumble</p>
+    <footer class="bg-dark text-white p-3 text-center mt-auto">
+        <p class="mb-0">&copy; 2025 Recipe Rumble</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 </html>
