@@ -135,6 +135,7 @@
                     const submissionEnd = new Date(postedAt.getTime() + 4 * 24 * 60 * 60 * 1000); // 4 days
                     const initialTimeLeft = {{ time_left }}; // Server-side time left in ms
                     const startTime = Date.now();
+
                     function updateTimer() {
                         const elapsed = Date.now() - startTime;
                         const timeLeft = Math.max(0, initialTimeLeft - elapsed);
@@ -151,13 +152,10 @@
                         timerElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                         console.log('Timer updated:', timerElement.textContent);
                     }
+
                     updateTimer();
                     setInterval(updateTimer, 1000);
-                } catch (e) {
-                    console.error('Error initializing timer:', e);
-                    document.getElementById('timer').textContent = 'Timer error';
                 }
-            });
         </script>
     {% endif %}
 </body>
