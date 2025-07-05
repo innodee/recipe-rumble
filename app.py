@@ -317,8 +317,47 @@ def admin():
 
     # Handle posting a new recipe
     if active_tab == 'post_recipe' and request.method == 'POST' and not active_recipe:
-        # Posting logic...
-        pass
+        title = request.form.get('title')
+        ingredients = request.form.get('ingredients')
+        instructions = request.form.get('instructions')
+        image_file = request.files.get('image')
+
+        if not title or not ingredients or not instructions:
+            flash('Title, ingredients, and instructions are required.', 'danger')
+        else:
+            image_data = None
+            if image_file and image_file.filename:
+                if not image_file.mimetype.startswith('image/'):
+                    flash('Invalid image format. Please upload a PNG or JPEG.', 'danger')
+                    return redirect(url_for('admin', tab='post_recipe'))
+                image_data = image_file.read()
+
+            try:
+                # Deactivate any currently active recipes
+                conn.execute("UPDATE recipes SET is_active = 0 WHERE is_active = 1")
+
+                recipe_id = str(uuid.uuid4())
+                posted_at = datetime.utcnow().isoformat()
+                
+                conn.execute("""
+                    INSERT INTO recipes (id, title, ingredients, instructions, created_by, image, posted_at, is_active)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, (recipe_id, title, ingredients, instructions, session['user_id'], image_data, posted_at, 1))
+                conn.commit()
+                flash('Recipe posted successfully!', 'success')
+                # Refresh active_recipe after posting
+                active_recipe = conn.execute("SELECT * FROM recipes WHERE id = ?", (recipe_id,)).fetchone()
+                return redirect(url_for('admin', tab='post_recipe')) 
+            except sqlite3.Error as e:
+                flash(f'Database error: {e}', 'danger')
+            except Exception as e:
+                flash(f'An unexpected error occurred: {e}', 'danger')
+        # Fallthrough here means validation failed or an error occurred,
+        # so we re-render the admin page, preserving the active_tab.
+        # The active_recipe variable might need to be re-fetched if a new recipe was just posted
+        # or if an error occurred mid-process.
+        # However, redirecting is cleaner for POST-Redirect-Get pattern.
+        # If flash was shown, it will be displayed after redirect.
 
     submissions = conn.execute('''  -- Fetch all submissions
         SELECT s.submission_id, s.recipe_id, s.submitted_at, u.username, r.title, s.image
@@ -447,6 +486,8 @@ def edit_recipe(recipe_id):
     if not recipe:
         flash('Recipe not found')
         return redirect(url_for('index'))
+    # Fetch the user information
+    user = conn.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],)).fetchone()
     if request.method == 'POST':
         title = request.form['title']
         ingredients = request.form['ingredients']
@@ -456,7 +497,7 @@ def edit_recipe(recipe_id):
         conn.commit()
         flash('Recipe updated successfully')
         return redirect(url_for('index'))
-    return render_template('edit_recipe.html', recipe=recipe)
+    return render_template('edit_recipe.html', recipe=recipe, user=user)  # Pass user to template
 
 @app.route('/delete_recipe/<recipe_id>')
 def delete_recipe(recipe_id):
