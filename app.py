@@ -1,12 +1,43 @@
 import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_dance.contrib.facebook import make_facebook_blueprint, facebook
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.consumer import oauth_authorized, oauth_error
+from flask_dance.consumer.storage.sqla import SQLAlchemyStorage # Or other storage
+from sqlalchemy.orm.exc import NoResultFound
+import os
 import uuid
 import base64
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey123'
+app.secret_key = 'supersecretkey123' # Keep this, Flask-Dance needs it
+
+# OAuth 2.0 client IDs and secrets - REPLACE WITH YOUR ACTUAL CREDENTIALS
+# For development, you can often use http://localhost:5000 as the redirect URI
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' # Allow HTTP for local development
+app.config["FACEBOOK_OAUTH_CLIENT_ID"] = "YOUR_FACEBOOK_APP_ID"
+app.config["FACEBOOK_OAUTH_CLIENT_SECRET"] = "YOUR_FACEBOOK_APP_SECRET"
+app.config["GOOGLE_OAUTH_CLIENT_ID"] = "YOUR_GOOGLE_CLIENT_ID"
+app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = "YOUR_GOOGLE_CLIENT_SECRET"
+
+facebook_bp = make_facebook_blueprint(
+    client_id=app.config["FACEBOOK_OAUTH_CLIENT_ID"],
+    client_secret=app.config["FACEBOOK_OAUTH_CLIENT_SECRET"],
+    scope=["email"], # Request email permission
+    redirect_to="facebook_login" # Route to handle after Facebook auth
+)
+app.register_blueprint(facebook_bp, url_prefix="/login")
+
+google_bp = make_google_blueprint(
+    client_id=app.config["GOOGLE_OAUTH_CLIENT_ID"],
+    client_secret=app.config["GOOGLE_OAUTH_CLIENT_SECRET"],
+    scope=["openid", "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"], # Standard scopes
+    redirect_to="google_login" # Route to handle after Google auth
+)
+app.register_blueprint(google_bp, url_prefix="/login")
+
 
 # Database initialization
 def init_db():
@@ -16,6 +47,9 @@ def init_db():
             id TEXT PRIMARY KEY,
             username TEXT UNIQUE,
             password TEXT,
+            email TEXT UNIQUE NOT NULL,
+            social_provider TEXT,
+            social_id TEXT,
             role TEXT,
             points INTEGER DEFAULT 0
         )''')
@@ -46,8 +80,9 @@ def init_db():
         c.execute("SELECT * FROM users WHERE role='admin'")
         if not c.fetchone():
             admin_id = str(uuid.uuid4())
-            c.execute("INSERT INTO users (id, username, password, role, points) VALUES (?, ?, ?, ?, ?)",
-                      (admin_id, 'admin', generate_password_hash('admin123'), 'admin', 0))
+            # Add a placeholder email for the admin user
+            c.execute("INSERT INTO users (id, username, password, email, role, points) VALUES (?, ?, ?, ?, ?, ?)",
+                      (admin_id, 'admin', generate_password_hash('admin123'), 'admin@example.com', 'admin', 0))
         conn.commit()
 
 # Database connection helper
@@ -126,17 +161,136 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        email = request.form['email']  # Get email from form
+
+        if not email: # Or add more robust email validation
+            flash('Email is required.')
+            return render_template('register.html')
+
         conn = get_db()
         try:
             user_id = str(uuid.uuid4())
-            conn.execute("INSERT INTO users (id, username, password, role, points) VALUES (?, ?, ?, ?, ?)",
-                         (user_id, username, generate_password_hash(password), 'user', 0))
+            # Include email in the insert statement, leave social_provider and social_id as NULL for now
+            conn.execute("INSERT INTO users (id, username, password, email, role, points) VALUES (?, ?, ?, ?, ?, ?)",
+                         (user_id, username, generate_password_hash(password), email, 'user', 0))
             conn.commit()
             flash('Registration successful! Please log in.')
             return redirect(url_for('login'))
-        except sqlite3.IntegrityError:
-            flash('Username already exists')
+        except sqlite3.IntegrityError as e:
+            if "UNIQUE constraint failed: users.username" in str(e):
+                flash('Username already exists.')
+            elif "UNIQUE constraint failed: users.email" in str(e):
+                flash('Email address already registered.')
+            else:
+                flash('An error occurred during registration. Please try again.')
     return render_template('register.html')
+
+# Facebook login route - this is where Facebook redirects after auth
+@app.route("/facebook_login")
+def facebook_login():
+    if not facebook.authorized:
+        flash("Facebook authorization failed.", "error")
+        return redirect(url_for("register")) # Or login page
+
+    resp = facebook.get("/me?fields=id,email,first_name,last_name")
+    if not resp.ok:
+        flash("Failed to fetch user info from Facebook.", "error")
+        return redirect(url_for("register"))
+
+    fb_user = resp.json()
+    user_email = fb_user.get("email")
+    user_social_id = fb_user.get("id")
+    user_first_name = fb_user.get("first_name", "")
+    user_last_name = fb_user.get("last_name", "")
+
+    if not user_email:
+        flash("Email not provided by Facebook. Please register manually or ensure your Facebook email is public.", "error")
+        return redirect(url_for("register"))
+
+    conn = get_db()
+    user = conn.execute("SELECT * FROM users WHERE email = ?", (user_email,)).fetchone()
+
+    if user: # User exists with this email
+        # Optionally, link account if social_id is not set, or just log them in
+        if not user['social_id'] or user['social_provider'] != 'facebook':
+            conn.execute("UPDATE users SET social_provider = ?, social_id = ? WHERE id = ?",
+                         ('facebook', user_social_id, user['id']))
+            conn.commit()
+        session['user_id'] = user['id']
+        session['role'] = user['role']
+        flash('Logged in successfully via Facebook!', 'success')
+        return redirect(url_for('index'))
+    else: # New user
+        username = f"{user_first_name}{user_last_name}".replace(" ", "") or f"fb_{user_social_id}"
+        # Ensure username is unique
+        temp_username = username
+        counter = 1
+        while conn.execute("SELECT * FROM users WHERE username = ?", (temp_username,)).fetchone():
+            temp_username = f"{username}{counter}"
+            counter += 1
+        username = temp_username
+
+        user_id = str(uuid.uuid4())
+        conn.execute("INSERT INTO users (id, username, email, social_provider, social_id, role, points) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                     (user_id, username, user_email, 'facebook', user_social_id, 'user', 0))
+        conn.commit()
+        session['user_id'] = user_id
+        session['role'] = 'user'
+        flash('Registered and logged in successfully via Facebook!', 'success')
+        return redirect(url_for('index'))
+
+# Google login route - this is where Google redirects after auth
+@app.route("/google_login")
+def google_login():
+    if not google.authorized:
+        flash("Google authorization failed.", "error")
+        return redirect(url_for("register"))
+
+    resp = google.get("/oauth2/v2/userinfo") # Standard endpoint for user info
+    if not resp.ok:
+        flash("Failed to fetch user info from Google.", "error")
+        return redirect(url_for("register"))
+
+    google_user = resp.json()
+    user_email = google_user.get("email")
+    user_social_id = google_user.get("id")
+    user_first_name = google_user.get("given_name", "")
+    user_last_name = google_user.get("family_name", "")
+
+    if not user_email:
+        flash("Email not provided by Google. Please register manually or ensure your Google email is public.", "error")
+        return redirect(url_for("register"))
+
+    conn = get_db()
+    user = conn.execute("SELECT * FROM users WHERE email = ?", (user_email,)).fetchone()
+
+    if user: # User exists
+        if not user['social_id'] or user['social_provider'] != 'google':
+            conn.execute("UPDATE users SET social_provider = ?, social_id = ? WHERE id = ?",
+                         ('google', user_social_id, user['id']))
+            conn.commit()
+        session['user_id'] = user['id']
+        session['role'] = user['role']
+        flash('Logged in successfully via Google!', 'success')
+        return redirect(url_for('index'))
+    else: # New user
+        username = f"{user_first_name}{user_last_name}".replace(" ", "") or f"gl_{user_social_id}"
+        # Ensure username is unique
+        temp_username = username
+        counter = 1
+        while conn.execute("SELECT * FROM users WHERE username = ?", (temp_username,)).fetchone():
+            temp_username = f"{username}{counter}"
+            counter += 1
+        username = temp_username
+
+        user_id = str(uuid.uuid4())
+        conn.execute("INSERT INTO users (id, username, email, social_provider, social_id, role, points) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                     (user_id, username, user_email, 'google', user_social_id, 'user', 0))
+        conn.commit()
+        session['user_id'] = user_id
+        session['role'] = 'user'
+        flash('Registered and logged in successfully via Google!', 'success')
+        return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
