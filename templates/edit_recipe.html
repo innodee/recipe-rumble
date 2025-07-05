@@ -4,58 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Recipe - Recipe Rumble</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-    <header class="bg-teal-600 text-white p-4 sticky top-0 z-10 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Recipe Rumble</h1>
-            <nav class="space-x-4">
-                <a href="{{ url_for('index') }}" class="hover:text-teal-200">Home</a>
-                <a href="{{ url_for('submissions') }}" class="hover:text-teal-200">Submissions</a>
-                <a href="{{ url_for('leaderboard') }}" class="hover:text-teal-200">Leaderboard</a>
-                <a href="{{ url_for('admin') }}" class="hover:text-teal-200">Admin Dashboard</a>
-                <a href="{{ url_for('logout') }}" class="hover:text-teal-200">Logout</a>
-            </nav>
+<body class="d-flex flex-column vh-100 bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="{{ url_for('index') }}">Recipe Rumble</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('submissions') }}">Submissions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+                    </li>
+                    {% if session.get('role') == 'admin' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="container mx-auto p-6 flex-grow">
-        <h2 class="text-3xl font-semibold text-teal-700 mb-6">Edit Recipe</h2>
+    <main class="container py-4 flex-grow-1">
+        <h2 class="h2 font-weight-semibold text-primary mb-4">Edit Recipe</h2>
         
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for message in messages %}
-                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded" role="alert">
+                {% for category, message in messages %}
+                    {% set alert_type = 'danger' %}
+                    {% if category == 'success' %}{% set alert_type = 'success' %}{% endif %}
+                    <div class="alert alert-{{ alert_type }} alert-dismissible fade show" role="alert">
                         {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold text-teal-600 mb-4">Edit {{ recipe['title'] }}</h3>
-            <form method="post" action="{{ url_for('edit_recipe', recipe_id=recipe['id']) }}">
-                <div class="mb-4">
-                    <label for="title" class="block text-gray-700">Title:</label>
-                    <input type="text" name="title" id="title" value="{{ recipe['title'] }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                </div>
-                <div class="mb-4">
-                    <label for="ingredients" class="block text-gray-700">Ingredients:</label>
-                    <textarea name="ingredients" id="ingredients" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">{{ recipe['ingredients'] }}</textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="instructions" class="block text-gray-700">Instructions:</label>
-                    <textarea name="instructions" id="instructions" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">{{ recipe['instructions'] }}</textarea>
-                </div>
-                <button type="submit" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">Update Recipe</button>
-                <a href="{{ url_for('index') }}" class="inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition ml-2">Cancel</a>
-            </form>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title h4 text-info mb-3">Edit "{{ recipe['title'] }}"</h3>
+                <form method="post" action="{{ url_for('edit_recipe', recipe_id=recipe['id']) }}">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" name="title" id="title" value="{{ recipe['title'] }}" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="ingredients">Ingredients:</label>
+                        <textarea name="ingredients" id="ingredients" required class="form-control" rows="4">{{ recipe['ingredients'] }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="instructions">Instructions:</label>
+                        <textarea name="instructions" id="instructions" required class="form-control" rows="6">{{ recipe['instructions'] }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Recipe</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary ml-2">Cancel</a>
+                </form>
+            </div>
         </div>
     </main>
 
-    <footer class="bg-teal-600 text-white p-4 text-center">
-        <p>&copy; 2025 Recipe Rumble</p>
+    <footer class="bg-dark text-white p-3 text-center mt-auto">
+        <p class="mb-0">&copy; 2025 Recipe Rumble</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 </html>
