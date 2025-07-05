@@ -39,6 +39,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
                     </li>
+
                     {% if user['role'] == 'admin' %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard</a>
@@ -53,8 +54,9 @@
     </nav>
 
     <main class="container py-4 flex-grow-1">
+
         <h2 class="h2 font-weight-semibold text-primary mb-3">Welcome, {{ user['username'] }} <span class="text-muted small">(Points: {{ user['points'] }})</span></h2>
-        
+       
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
