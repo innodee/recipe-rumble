@@ -35,7 +35,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
                     </li>
-
+                    {% if user['role'] == 'admin' %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard</a>
                     </li>
@@ -49,14 +49,11 @@
     </nav>
 
     <main class="container py-4 flex-grow-1">
-
         <h2 class="h2 font-weight-semibold text-primary mb-4">Welcome, {{ user['username'] }} <span class="text-muted small">(Points: {{ user['points'] }})</span></h2>
 
-        
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    {# Map category to Bootstrap alert type if possible, default to danger #}
                     {% set alert_type = 'danger' %}
                     {% if category == 'success' %}{% set alert_type = 'success' %}{% endif %}
                     {% if category == 'info' %}{% set alert_type = 'info' %}{% endif %}
