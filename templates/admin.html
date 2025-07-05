@@ -26,6 +26,7 @@
                         <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
                     </li>
                     {% if user['role'] == 'admin' %}
+
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard <span class="sr-only">(current)</span></a>
                     </li>
