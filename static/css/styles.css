@@ -1,0 +1,36 @@
+/* Custom styles */
+body {
+    padding-top: 56px;
+}
+
+.recipe-card {
+    transition: transform .2s;
+}
+
+.recipe-card:hover {
+    transform: scale(1.02);
+}
+
+.timer-pulse {
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Hero section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('../img/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}

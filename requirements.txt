@@ -2,3 +2,4 @@ flask==3.0.3
 werkzeug==3.0.4
 gunicorn==23.0.0
 waitress==3.0.0
+flask-dance==7.0.0

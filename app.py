@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_dance.contrib.facebook import make_facebook_blueprint, facebook
 from flask_dance.contrib.google import make_google_blueprint, google
@@ -11,7 +11,8 @@ import uuid
 import base64
 from datetime import datetime, timedelta
 
-app = Flask(__name__)
+#app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.secret_key = 'supersecretkey123' # Keep this, Flask-Dance needs it
 
 # OAuth 2.0 client IDs and secrets - REPLACE WITH YOUR ACTUAL CREDENTIALS
@@ -520,6 +521,10 @@ def leaderboard():
     user = get_db().execute("SELECT * FROM users WHERE id = ?", (session['user_id'],)).fetchone()
     users = get_db().execute("SELECT username, points FROM users WHERE role = 'user' ORDER BY points DESC").fetchall()
     return render_template('leaderboard.html', users=users, user=user)  # Pass the user object
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory(app.static_folder, filename)
 
 # Initialize database and run app
 if __name__ == '__main__':
