@@ -1,90 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Recipe - Recipe Rumble</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-</head>
-<body class="d-flex flex-column vh-100 bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand font-weight-bold" href="{{ url_for('index') }}">Recipe Rumble</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('submissions') }}">Submissions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('leaderboard') }}">Leaderboard</a>
-                    </li>
-
-                    {% if user['role'] == 'admin' %}
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('admin') }}">Admin Dashboard</a>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <main class="container py-4 flex-grow-1">
-        <h2 class="h2 font-weight-semibold text-primary mb-4">Edit Recipe</h2>
-        
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    {% set alert_type = 'danger' %}
-                    {% if category == 'success' %}{% set alert_type = 'success' %}{% endif %}
-                    <div class="alert alert-{{ alert_type }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                {% endfor %}
+{% extends "base.html" %}
+{% block title %}Edit Recipe • Recipe Rumble{% endblock %}
+{% block content %}
+<div class="container">
+  <h2 class="h3 fw-semibold text-accent mb-4">Edit Recipe</h2>
+  <div class="card card-foody">
+    <div class="card-body">
+      <h3 class="h5 mb-3">Edit "{{ recipe['title'] }}"</h3>
+      <form method="post" action="{{ url_for('edit_recipe', recipe_id=recipe['id']) }}" enctype="multipart/form-data">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" value="{{ recipe['title'] }}" required class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Ingredients</label>
+            <textarea name="ingredients" required class="form-control" rows="4">{{ recipe['ingredients'] }}</textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Instructions</label>
+            <textarea name="instructions" required class="form-control" rows="6">{{ recipe['instructions'] }}</textarea>
+          </div>
+          
+          <div class="col-md-6">
+            <label class="form-label">Current Image</label>
+            {% if recipe['image_base64'] %}
+              <img src="data:image/jpeg;base64,{{ recipe['image_base64'] }}" class="img-fluid rounded-xxl img-cover" alt="{{ recipe['title'] }}">
+            {% else %}
+              <div class="form-text">No image uploaded.</div>
             {% endif %}
-        {% endwith %}
-
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h3 class="card-title h4 text-info mb-3">Edit "{{ recipe['title'] }}"</h3>
-                <form method="post" action="{{ url_for('edit_recipe', recipe_id=recipe['id']) }}">
-                    <div class="form-group">
-                        <label for="title">Title:</label>
-                        <input type="text" name="title" id="title" value="{{ recipe['title'] }}" required class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="ingredients">Ingredients:</label>
-                        <textarea name="ingredients" id="ingredients" required class="form-control" rows="4">{{ recipe['ingredients'] }}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="instructions">Instructions:</label>
-                        <textarea name="instructions" id="instructions" required class="form-control" rows="6">{{ recipe['instructions'] }}</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Recipe</button>
-                    <a href="{{ url_for('index') }}" class="btn btn-secondary ml-2">Cancel</a>
-                </form>
-            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Replace Image (PNG/JPEG only)</label>
+            <input type="file" name="image" accept="image/png, image/jpeg" class="form-control" id="editImageInput">
+            <div class="form-text">Leave empty to keep the current image.</div>
+          </div>
+          <div class="col-12 d-flex gap-2">
+            <button class="btn btn-accent-gradient" type="submit">Update Recipe</button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Cancel</a>
+          </div>
         </div>
-    </main>
-
-    <footer class="bg-dark text-white p-3 text-center mt-auto">
-        <p class="mb-0">&copy; 2025 Recipe Rumble</p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
-</body>
-</html>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

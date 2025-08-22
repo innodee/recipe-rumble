@@ -1,71 +1,304 @@
 {% extends "base.html" %}
+{% block title %}Home • Recipe Rumble{% endblock %}
 
-{% block title %}Home - Recipe Rumble{% endblock %}
-
-{% block content %}
-<section class="py-5">
-    <div class="container">
-        <h1 class="display-4">Welcome, {{ user['username'] }}</h1>
-        <p class="lead">Your points: {{ user['points'] }}</p>
-        
-        {% if recipe %}
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h2 class="h4 mb-0">Current Recipe Challenge</h2>
-            </div>
-            <div class="card-body">
-                <h3 class="card-title">{{ recipe['title'] }}</h3>
-                <div class="row">
-                    {% if recipe['image_base64'] %}
-                    <div class="col-md-4">
-                        <img src="data:image/jpeg;base64,{{ recipe['image_base64'] }}" 
-                             class="img-fluid rounded" alt="{{ recipe['title'] }}">
-                    </div>
-                    {% endif %}
-                    <div class="{% if recipe['image_base64'] %}col-md-8{% else %}col-12{% endif %}">
-                        <h4>Ingredients</h4>
-                        <p>{{ recipe['ingredients'] }}</p>
-                        <h4>Instructions</h4>
-                        <p>{{ recipe['instructions'] }}</p>
-                    </div>
-                </div>
-                
-                {% if status != 'inactive' %}
-                <div class="mt-3 alert alert-info">
-                    <strong>Time Remaining:</strong> 
-                    <span id="timer" class="badge bg-secondary">{{ time_left }}</span>
-                </div>
-                {% endif %}
-                
-                {% if not user_submitted and user['role'] != 'admin' %}
-                <form method="post" enctype="multipart/form-data" 
-                      action="{{ url_for('submit_image', recipe_id=recipe['id']) }}">
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Submit Your Image</label>
-                        <input class="form-control" type="file" id="image" name="image" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-                {% elif user_submitted %}
-                <div class="alert alert-success">
-                    <i class="fas fa-check-circle"></i> You've already submitted for this recipe!
-                </div>
-                {% endif %}
-            </div>
-        </div>
+{% block hero %}
+<section class="section-hero py-5 py-lg-6 border-bottom">
+  <div class="container">
+    <div class="row align-items-center gy-4">
+      <div class="col-lg-7">
+        <h1 class="display-5 fw-bold mb-3">
+          {% if session.get('user_id') %}
+            Welcome, {{ user['username'] }}
+          {% else %}
+            Cook, snap & compete weekly
+          {% endif %}
+        </h1>
+        {% if session.get('user_id') %}
+          <p class="lead text-secondary">Your points: <span class="badge bg-success-subtle text-success">{{ user['points'] }}</span></p>
+          <div class="d-flex gap-2 mt-3">
+            <a href="{{ url_for('submissions') }}" class="btn btn-accent-gradient rounded-pill px-4">View Submissions</a>
+            <a href="{{ url_for('leaderboard') }}" class="btn btn-outline-secondary rounded-pill px-4">Leaderboard</a>
+          </div>
         {% else %}
-        <div class="alert alert-warning">
-            No active recipe challenge at the moment. Check back soon!
-        </div>
+          <p class="lead text-secondary">Join friendly cook-offs, vote on dishes you love, and climb the leaderboard.</p>
+          <div class="d-flex gap-2 mt-3">
+            <a href="{{ url_for('register') }}" class="btn btn-accent-gradient rounded-pill px-4">Create free account</a>
+            <a href="{{ url_for('submissions') }}" class="btn btn-outline-secondary rounded-pill px-4">Browse entries</a>
+          </div>
         {% endif %}
+      </div>
+      {% if not session.get('user_id') %}
+      <!-- Show promo image only for logged-out visitors -->
+      <div class="col-lg-5">
+        <img class="w-100 rounded-xxl shadow-sm" src="https://images.unsplash.com/photo-1543353071-10c8ba85a904?q=80&w=1200&auto=format&fit=crop" alt="Fresh ingredients">
+      </div>
+      {% endif %}
     </div>
+  </div>
 </section>
 {% endblock %}
 
+
+{% block content %}
+<div class="container">
+
+  {# ==================== LOGGED-IN: normal/simple experience ==================== #}
+  {% if session.get('user_id') %}
+    {% if recipe %}
+    <div class="card card-foody mt-4">
+      <div class="card-header bg-white">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <h2 class="h4 mb-0"><i class="fa-solid fa-fire-burner text-accent me-2"></i>Current Recipe Challenge</h2>
+          {% if status != 'inactive' %}
+          <span class="badge badge-soft px-3 py-2">
+            <i class="fa-regular fa-hourglass-half me-1"></i>
+            <span id="timer">{{ time_left }}</span>
+          </span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row g-4 align-items-start">
+          {% if recipe['image_base64'] %}
+          <div class="col-md-5">
+            <img src="data:image/jpeg;base64,{{ recipe['image_base64'] }}" class="img-fluid rounded-xxl img-cover recipe-img" alt="{{ recipe['title'] }}">
+          </div>
+          <div class="col-md-7">
+          {% else %}
+          <div class="col-12">
+          {% endif %}
+            <h3 class="h3 fw-semibold mb-3">{{ recipe['title'] }}</h3>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-xxl">
+                  <div class="card-body">
+                    <h6 class="text-uppercase text-secondary mb-2">Ingredients</h6>
+                    <ul class="list-unstyled mb-0 small">
+                      {% for line in recipe['ingredients'].split('
+') if line.strip() %}
+                      <li class="d-flex align-items-start mb-1">
+                        <i class="fa-solid fa-seedling text-accent me-2 mt-1"></i>
+                        <span>{{ line }}</span>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-xxl">
+                  <div class="card-body">
+                    <h6 class="text-uppercase text-secondary mb-2">Instructions</h6>
+                    <ol class="mb-0 small ps-3">
+                      {% for step in recipe['instructions'].split('
+') if step.strip() %}
+                      <li class="mb-1">{{ step }}</li>
+                      {% endfor %}
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% if user_submitted %}
+              <div class="alert alert-success mt-3"><i class="fa-regular fa-circle-check me-1"></i> You've already submitted for this recipe!</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if status != 'inactive' and not user_submitted and user['role'] != 'admin' %}
+    <section class="mt-4">
+      <div class="card border-0 shadow-sm rounded-xxl">
+        <div class="card-body">
+          <h5 class="card-title text-accent"><i class="fa-regular fa-circle-up me-2"></i>Ready to submit?</h5>
+          <p class="small text-secondary mb-3">1) Cook the recipe • 2) Take a clear photo • 3) Upload it below</p>
+          <form method="post" enctype="multipart/form-data" action="{{ url_for('submit_image', recipe_id=recipe['id']) }}">
+            <div class="row g-2 align-items-center">
+              <div class="col-md-8">
+                <input class="form-control form-control-lg" type="file" id="image" name="image" accept="image/png, image/jpeg" required>
+              </div>
+              <div class="col-md-4 d-grid">
+                <button type="submit" class="btn btn-accent-gradient btn-lg">Submit Photo</button>
+              </div>
+            </div>
+          </form>
+          <div class="mt-3 small text-secondary">
+            <strong>Tips:</strong> Use natural light, keep your plating clean, and avoid heavy filters.
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    {% else %}
+      <div class="alert alert-warning mt-4"><i class="fa-regular fa-bell me-1"></i> No active recipe challenge at the moment. Check back soon!</div>
+    {% endif %}
+
+  {# ==================== GUESTS: interactive landing ==================== #}
+  {% else %}
+
+    <!-- Spotlight carousel -->
+    <div id="spotlightCarousel" class="carousel slide rounded-xxl overflow-hidden shadow-sm mt-4" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#spotlightCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#spotlightCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#spotlightCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner" style="max-height:420px">
+        <div class="carousel-item active">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1400&auto=format&fit=crop" class="d-block w-100 img-cover" alt="Pasta">
+          <div class="carousel-caption d-none d-md-block">
+            <span class="badge bg-dark bg-opacity-75 rounded-pill">Community Spotlight</span>
+            <h5 class="mt-2">Hearty Weeknight Pasta</h5>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1400&auto=format&fit=crop" class="d-block w-100 img-cover" alt="Salad">
+          <div class="carousel-caption d-none d-md-block">
+            <span class="badge bg-dark bg-opacity-75 rounded-pill">Winner</span>
+            <h5 class="mt-2">Green Goddess Bowl</h5>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?q=80&w=1400&auto=format&fit=crop" class="d-block w-100 img-cover" alt="Dessert">
+          <div class="carousel-caption d-none d-md-block">
+            <span class="badge bg-dark bg-opacity-75 rounded-pill">Runner-up</span>
+            <h5 class="mt-2">Berry Cheesecake Bites</h5>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#spotlightCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#spotlightCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <!-- Feature cards -->
+    <section class="my-5">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card card-foody h-100 text-center p-3">
+            <div class="display-6">🥘</div>
+            <h5 class="mt-2">Weekly Challenges</h5>
+            <p class="text-secondary small mb-0">Fresh recipes to try, with new prompts and tips from the community.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-foody h-100 text-center p-3">
+            <div class="display-6">📷</div>
+            <h5 class="mt-2">Snap & Share</h5>
+            <p class="text-secondary small mb-0">Upload your dish photo in seconds and get feedback.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-foody h-100 text-center p-3">
+            <div class="display-6">🏆</div>
+            <h5 class="mt-2">Vote & Win</h5>
+            <p class="text-secondary small mb-0">Vote on favorites, earn points, and climb the leaderboard.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sponsored / Corporate Ads -->
+    <section class="mb-5">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="h4 mb-0">Sponsored</h3>
+        <a href="#" class="small text-secondary text-decoration-none">Advertising info</a>
+      </div>
+      <div class="row g-3">
+        <div class="col-12 d-none d-lg-block">
+          <div class="ad-slot ad-leaderboard d-flex align-items-center justify-content-center rounded-xxl">
+            <span class="text-secondary small">728×90 Leaderboard — Corporate banner</span>
+          </div>
+        </div>
+        <div class="col-12 d-lg-none">
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="ad-slot ad-mrec rounded-xxl d-flex align-items-center justify-content-center">
+                <span class="text-secondary small">300×250</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="ad-slot ad-mrec rounded-xxl d-flex align-items-center justify-content-center">
+                <span class="text-secondary small">300×250</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Photo Wall -->
+    <section class="mb-5">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="h4 mb-0">Trending Dishes</h3>
+        <a href="{{ url_for('register') }}" class="small text-secondary text-decoration-none">Join to participate</a>
+      </div>
+      <div class="row g-3">
+        {% set gallery = [
+          'https://images.unsplash.com/photo-1604908554007-5b8e799d10a1?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop'
+        ] %}
+        {% for img in gallery %}
+        <div class="col-6 col-md-4 col-lg-2">
+          <span class="d-block rounded-xxl overflow-hidden hover-raise">
+            <img src="{{ img }}" class="w-100 img-cover" style="height:140px" alt="Trending dish {{ loop.index }}">
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="mb-5">
+      <div class="p-4 p-md-5 bg-white rounded-xxl shadow-sm d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <div class="mb-3 mb-md-0">
+          <h3 class="h4 mb-1">Ready to rumble?</h3>
+          <p class="text-secondary mb-0">Create a free account and join the next challenge.</p>
+        </div>
+        <a href="{{ url_for('register') }}" class="btn btn-accent-gradient btn-lg rounded-pill px-4">Get started</a>
+      </div>
+    </section>
+
+  {% endif %}
+
+</div>
+{% endblock %}
+
+
 {% block extra_js %}
-{% if recipe and status != 'inactive' %}
+{% if session.get('user_id') and recipe and status != 'inactive' %}
 <script>
-// Your existing timer script here
+(function(){
+  const badge = document.getElementById('timer');
+  const initial = Number({{ time_left|int }});
+  const start = Date.now();
+  function fmt(ms){
+    const s = Math.max(0, Math.floor(ms/1000));
+    const d = Math.floor(s/86400);
+    const h = Math.floor((s%86400)/3600);
+    const m = Math.floor((s%3600)/60);
+    const sec = s%60;
+    return `${d}d ${h}h ${m}m ${sec}s`;
+  }
+  function tick(){
+    const elapsed = Date.now() - start;
+    const left = Math.max(0, initial - elapsed);
+    badge.textContent = fmt(left);
+    if(left>0) requestAnimationFrame(tick);
+  }
+  tick();
+})();
 </script>
 {% endif %}
 {% endblock %}

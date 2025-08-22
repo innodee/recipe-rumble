@@ -1,0 +1,68 @@
+:root{
+  --accent:#22c55e;          /* green */
+  --accent-2:#16a34a;
+  --soft:#f7faf7;
+  --dark:#0f172a;
+}
+*{font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
+.bg-soft{ background: var(--soft); }
+.text-accent{ color: var(--accent)!important; }
+.btn-accent-outline{ border:2px solid var(--accent); color: var(--accent); }
+.btn-accent-outline:hover{ background: var(--accent); color:#fff; }
+.btn-accent-gradient{
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #fff;
+  border: 0;
+  box-shadow: 0 6px 20px rgba(34,197,94,.25);
+}
+.btn-accent-gradient:hover{ filter: brightness(1.03); color: #fff; }
+.navbar-blur{
+  backdrop-filter: saturate(140%) blur(8px);
+  background: rgba(255,255,255,.85);
+}
+.hover-raise{
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.hover-raise:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+.card-foody{
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,.05);
+}
+.badge-soft{
+  background: #e8f8ee;
+  color: var(--accent-2);
+}
+.section-hero{
+  background: radial-gradient(1000px 400px at 10% -10%, rgba(34,197,94,.15), transparent 60%),
+              radial-gradient(800px 500px at 100% 0%, rgba(25,146,89,.10), transparent 60%),
+              linear-gradient(180deg, #ffffff, #f6fff8);
+}
+.footer-wave{
+  background: linear-gradient(180deg, #0b1220, #101a33);
+}
+.footer-link{ color: rgba(255,255,255,.8); text-decoration: none; display:block; padding:.25rem 0; }
+.footer-link:hover{ color: #fff; }
+.opacity-75{ opacity: .75;}
+.hover-accent:hover{ color: var(--accent)!important; }
+.img-cover{ object-fit: cover; }
+.rounded-xxl{ border-radius: 1.25rem; }
+
+
+/* Ad Slots */
+.ad-slot{ background: repeating-linear-gradient(45deg, #e9ecef, #e9ecef 10px, #f8f9fa 10px, #f8f9fa 20px);
+          border: 1px dashed rgba(0,0,0,.15); }
+.ad-leaderboard{ height: 90px; }
+.ad-mrec{ height: 250px; }
+
+
+/* Admin live preview image sizing */
+.admin-recipe-img{ object-fit: cover; width: 100%; height: 100%; }
+@media (max-width: 767.98px){
+  .admin-recipe-img{ height: 240px; }
+}
