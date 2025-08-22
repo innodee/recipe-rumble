@@ -136,16 +136,22 @@ def init_db():
     )
     db.commit()
 
-@app.before_first_request
-def bootstrap():
-    init_db()
+def seed_admin_if_empty():
     db = get_db()
-    if db.execute("SELECT COUNT(*) AS c FROM users").fetchone()["c"] == 0:
+    row = db.execute("SELECT COUNT(*) AS c FROM users").fetchone()
+    if row["c"] == 0:
         db.execute(
             "INSERT INTO users (username, password_hash, role, points) VALUES (?, ?, 'admin', 0)",
             ("admin", generate_password_hash("admin")),
         )
         db.commit()
+
+# ------------------------------------------------------------------------------
+# Flask 3.x safe bootstrap (run at import time within app context)
+# ------------------------------------------------------------------------------
+with app.app_context():
+    init_db()
+    seed_admin_if_empty()
 
 # ------------------------------------------------------------------------------
 # Utilities
