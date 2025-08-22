@@ -1,6 +1,6 @@
 import os
-import base64
 import io
+import base64
 import sqlite3
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
 # ------------------------------------------------------------------------------
-# Flask setup
+# Flask app config
 # ------------------------------------------------------------------------------
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-me")
@@ -21,16 +21,16 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-me")
 APP_DIR = Path(__file__).resolve().parent
 DB_PATH = APP_DIR / "recipe_rumble.db"
 
-# Submission/voting windows (tweak as needed)
+# Windows for submission and voting (hours)
 SUBMISSION_HOURS = int(os.environ.get("RR_SUBMISSION_HOURS", "48"))
 VOTING_HOURS = int(os.environ.get("RR_VOTING_HOURS", "24"))
 
+# Upload constraints
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
-MAX_FILE_BYTES = 5 * 1024 * 1024  # 5MB limit
+MAX_FILE_BYTES = 5 * 1024 * 1024  # 5 MB
 
 # ------------------------------------------------------------------------------
-# Optional OAuth (Option B): SessionStorage only, no SQLAlchemy required
-# We register real blueprints if Flask-Dance is installed; else, stub routes
+# Optional OAuth (Option B): Session-based if Flask-Dance exists; otherwise stubs
 # ------------------------------------------------------------------------------
 try:
     from flask_dance.contrib.google import make_google_blueprint
@@ -54,29 +54,26 @@ try:
         storage=SessionStorage(),
     )
     app.register_blueprint(facebook_bp, url_prefix="/login")
-except Exception:
-    # Fallback "dummy" blueprints so url_for('google.login') and ('facebook.login') resolve
+
+except ModuleNotFoundError:
+    # Stub blueprints so url_for('google.login') / ('facebook.login') still work
     from flask import Blueprint
 
-    google_dummy = Blueprint("google", __name__, url_prefix="/login/google")
-    facebook_dummy = Blueprint("facebook", __name__, url_prefix="/login/facebook")
+    google_dummy = Blueprint("google", __name__)
+    facebook_dummy = Blueprint("facebook", __name__)
 
-    @google_dummy.route("/login")
-    def login():  # endpoint: google.login
+    @google_dummy.route("/google", endpoint="login")
+    def google_login_stub():
         flash("Google OAuth is not configured on this deployment.", "warning")
         return redirect(url_for("login"))
 
-    @facebook_dummy.route("/login")
-    def login_fb():  # endpoint: facebook.login
+    @facebook_dummy.route("/facebook", endpoint="login")
+    def facebook_login_stub():
         flash("Facebook OAuth is not configured on this deployment.", "warning")
         return redirect(url_for("login"))
 
-    # Ensure endpoints exist as 'google.login' and 'facebook.login'
-    google_dummy.add_url_rule("", endpoint="login", view_func=google_dummy.view_functions["login"])
-    facebook_dummy.add_url_rule("", endpoint="login", view_func=facebook_dummy.view_functions["login_fb"])
-
-    app.register_blueprint(google_dummy, url_prefix="/login/google")
-    app.register_blueprint(facebook_dummy, url_prefix="/login/facebook")
+    app.register_blueprint(google_dummy, url_prefix="/login")
+    app.register_blueprint(facebook_dummy, url_prefix="/login")
 
 # ------------------------------------------------------------------------------
 # DB helpers (sqlite3)
@@ -106,6 +103,7 @@ def init_db():
             email TEXT,
             phone_number TEXT
         );
+
         CREATE TABLE IF NOT EXISTS recipes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -114,6 +112,7 @@ def init_db():
             image_base64 BLOB,
             posted_at INTEGER NOT NULL
         );
+
         CREATE TABLE IF NOT EXISTS submissions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             recipe_id INTEGER NOT NULL,
@@ -123,6 +122,7 @@ def init_db():
             FOREIGN KEY(recipe_id) REFERENCES recipes(id),
             FOREIGN KEY(user_id) REFERENCES users(id)
         );
+
         CREATE TABLE IF NOT EXISTS votes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             submission_id INTEGER NOT NULL,
@@ -139,10 +139,8 @@ def init_db():
 @app.before_first_request
 def bootstrap():
     init_db()
-    # Create default admin if none exists
     db = get_db()
-    cur = db.execute("SELECT COUNT(*) AS c FROM users")
-    if cur.fetchone()["c"] == 0:
+    if db.execute("SELECT COUNT(*) AS c FROM users").fetchone()["c"] == 0:
         db.execute(
             "INSERT INTO users (username, password_hash, role, points) VALUES (?, ?, 'admin', 0)",
             ("admin", generate_password_hash("admin")),
@@ -156,15 +154,12 @@ def utcnow_ts() -> int:
     return int(datetime.now(timezone.utc).timestamp())
 
 def allowed_file(filename: str) -> bool:
-    if not filename or "." not in filename:
-        return False
-    ext = filename.rsplit(".", 1)[1].lower()
-    return ext in ALLOWED_EXTENSIONS
+    return bool(filename and "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS)
 
 def file_to_jpeg_base64(storage_file) -> str | None:
     """
     Read a Werkzeug FileStorage and return a JPEG base64 string.
-    If Pillow is available, convert to JPEG; else, just base64 the raw bytes.
+    If Pillow is available, convert to JPEG; else base64 raw bytes.
     """
     if storage_file is None or storage_file.filename == "":
         return None
@@ -176,7 +171,6 @@ def file_to_jpeg_base64(storage_file) -> str | None:
         return None
     if len(data) > MAX_FILE_BYTES:
         raise ValueError("File too large (max 5MB)")
-    # Attempt conversion to JPEG via Pillow for consistency
     try:
         from PIL import Image
         img = Image.open(io.BytesIO(data)).convert("RGB")
@@ -184,45 +178,34 @@ def file_to_jpeg_base64(storage_file) -> str | None:
         img.save(out, format="JPEG", quality=85)
         return base64.b64encode(out.getvalue()).decode("ascii")
     except Exception:
-        # Fallback: base64 original bytes (will often still render)
         return base64.b64encode(data).decode("ascii")
 
 def current_user():
     uid = session.get("user_id")
     if not uid:
         return None
-    db = get_db()
-    row = db.execute("SELECT * FROM users WHERE id = ?", (uid,)).fetchone()
-    return row
+    return get_db().execute("SELECT * FROM users WHERE id = ?", (uid,)).fetchone()
 
 def get_active_recipe():
-    """Return the most recently posted recipe (simple 'active' rule)."""
-    db = get_db()
-    row = db.execute(
+    return get_db().execute(
         "SELECT * FROM recipes ORDER BY posted_at DESC LIMIT 1"
     ).fetchone()
-    return row
 
 def compute_status_and_time_left(posted_at_ts: int):
-    """Return status ('submission', 'voting', 'inactive') and time_left_ms for the current phase."""
     if not posted_at_ts:
         return "inactive", 0
     start = datetime.fromtimestamp(posted_at_ts, tz=timezone.utc)
     now = datetime.now(timezone.utc)
     submission_end = start + timedelta(hours=SUBMISSION_HOURS)
     voting_end = submission_end + timedelta(hours=VOTING_HOURS)
-
     if now < submission_end:
         return "submission", int((submission_end - now).total_seconds() * 1000)
-    elif now < voting_end:
+    if now < voting_end:
         return "voting", int((voting_end - now).total_seconds() * 1000)
-    else:
-        return "inactive", 0
+    return "inactive", 0
 
 def user_points(user_id: int) -> int:
-    db = get_db()
-    # Points = number of votes across user's submissions
-    row = db.execute(
+    row = get_db().execute(
         """
         SELECT COUNT(v.id) AS pts
         FROM votes v
@@ -244,8 +227,6 @@ def inject_now():
 def index():
     db = get_db()
     user_row = current_user()
-
-    # Build user dict for template
     user_dict = {
         "username": user_row["username"] if user_row else "Guest",
         "points": user_points(user_row["id"]) if user_row else 0,
@@ -255,21 +236,19 @@ def index():
     recipe = get_active_recipe()
     if recipe:
         status, time_left = compute_status_and_time_left(recipe["posted_at"])
-        # Has the current user submitted?
         user_submitted = False
         if user_row:
-            r = db.execute(
+            user_submitted = db.execute(
                 "SELECT 1 FROM submissions WHERE recipe_id=? AND user_id=?",
                 (recipe["id"], user_row["id"]),
-            ).fetchone()
-            user_submitted = r is not None
+            ).fetchone() is not None
 
         recipe_dict = {
             "id": recipe["id"],
             "title": recipe["title"],
             "ingredients": recipe["ingredients"],
             "instructions": recipe["instructions"],
-            "image_base64": recipe["image_base64"],  # JPEG base64 preferred
+            "image_base64": recipe["image_base64"],
         }
     else:
         status, time_left, user_submitted, recipe_dict = "inactive", 0, False, None
@@ -306,7 +285,6 @@ def submissions():
         )
 
     status, time_left = compute_status_and_time_left(recipe["posted_at"])
-
     rows = db.execute(
         """
         SELECT s.id AS submission_id, s.image_base64, s.submitted_at,
@@ -320,32 +298,27 @@ def submissions():
         (recipe["id"],),
     ).fetchall()
 
-    # Has user voted in this recipe (any submission)?
     user_voted = False
     if user_row:
-        voted_row = db.execute(
+        user_voted = db.execute(
             """
             SELECT 1 FROM votes v
             JOIN submissions s ON s.id = v.submission_id
             WHERE s.recipe_id = ? AND v.user_id = ?
             """,
             (recipe["id"], user_row["id"]),
-        ).fetchone()
-        user_voted = voted_row is not None
+        ).fetchone() is not None
 
-    submission_dicts = []
-    for r in rows:
-        submission_dicts.append(
-            {
-                "submission_id": r["submission_id"],
-                "image_base64": r["image_base64"],
-                "submitted_at": datetime.fromtimestamp(r["submitted_at"]).strftime(
-                    "%Y-%m-%d %H:%M"
-                ),
-                "username": r["username"],
-                "title": r["title"],
-            }
-        )
+    submission_dicts = [
+        {
+            "submission_id": r["submission_id"],
+            "image_base64": r["image_base64"],
+            "submitted_at": datetime.fromtimestamp(r["submitted_at"]).strftime("%Y-%m-%d %H:%M"),
+            "username": r["username"],
+            "title": r["title"],
+        }
+        for r in rows
+    ]
 
     return render_template(
         "submissions.html",
@@ -365,7 +338,6 @@ def vote(submission_id: int):
         flash("You must be a logged-in non-admin user to vote.", "warning")
         return redirect(url_for("submissions"))
 
-    # Check voting window based on active recipe
     recipe = get_active_recipe()
     if not recipe:
         flash("No active recipe to vote on.", "warning")
@@ -376,7 +348,6 @@ def vote(submission_id: int):
         flash("Voting is not currently open.", "warning")
         return redirect(url_for("submissions"))
 
-    # Ensure submission belongs to active recipe
     srow = db.execute(
         "SELECT * FROM submissions WHERE id = ? AND recipe_id = ?",
         (submission_id, recipe["id"]),
@@ -385,7 +356,6 @@ def vote(submission_id: int):
         flash("Invalid submission.", "danger")
         return redirect(url_for("submissions"))
 
-    # Check not already voted in this recipe
     exists = db.execute(
         """
         SELECT 1 FROM votes v
@@ -408,8 +378,7 @@ def vote(submission_id: int):
 
 @app.route("/leaderboard")
 def leaderboard():
-    db = get_db()
-    rows = db.execute(
+    rows = get_db().execute(
         """
         SELECT u.id, u.username,
                COALESCE((
@@ -423,18 +392,17 @@ def leaderboard():
         """
     ).fetchall()
     users = [{"username": r["username"], "points": int(r["points"])} for r in rows]
-    # Provide a user object for header
-    user_row = current_user()
+
+    u = current_user()
     user = {
-        "username": user_row["username"] if user_row else "Guest",
-        "points": user_points(user_row["id"]) if user_row else 0,
-        "role": (user_row["role"] if user_row else "guest"),
+        "username": u["username"] if u else "Guest",
+        "points": user_points(u["id"]) if u else 0,
+        "role": (u["role"] if u else "guest"),
     }
     return render_template("leaderboard.html", users=users, user=user)
 
 @app.route("/voting")
 def voting():
-    # Static page explaining voting; your template links back to submissions
     return render_template("voting.html")
 
 # ------------------------------------------------------------------------------
@@ -445,8 +413,7 @@ def login():
     if request.method == "POST":
         username = (request.form.get("username") or "").strip()
         password = request.form.get("password") or ""
-        db = get_db()
-        row = db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+        row = get_db().execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
         if row and check_password_hash(row["password_hash"], password):
             session["user_id"] = row["id"]
             session["role"] = row["role"]
@@ -469,12 +436,10 @@ def register():
             return render_template("register.html")
 
         db = get_db()
-        exists = db.execute("SELECT 1 FROM users WHERE username = ?", (username,)).fetchone()
-        if exists:
+        if db.execute("SELECT 1 FROM users WHERE username = ?", (username,)).fetchone():
             flash("Username is already taken.", "warning")
             return render_template("register.html")
 
-        # First non-admin user? Keep admin as seeded; all new users are 'user'
         db.execute(
             "INSERT INTO users (username, password_hash, role, email, phone_number) VALUES (?, ?, 'user', ?, ?)",
             (username, generate_password_hash(password), email, phone),
@@ -495,8 +460,8 @@ def logout():
 # ------------------------------------------------------------------------------
 @app.route("/submit_image/<int:recipe_id>", methods=["POST"])
 def submit_image(recipe_id: int):
-    user = current_user()
-    if not user or user["role"] == "admin":
+    u = current_user()
+    if not u or u["role"] == "admin":
         flash("Only logged-in non-admin users can submit.", "warning")
         return redirect(url_for("index"))
 
@@ -511,12 +476,10 @@ def submit_image(recipe_id: int):
         flash("Submission window is closed.", "warning")
         return redirect(url_for("index"))
 
-    # Ensure not already submitted
-    exists = db.execute(
+    if db.execute(
         "SELECT 1 FROM submissions WHERE recipe_id = ? AND user_id = ?",
-        (recipe_id, user["id"]),
-    ).fetchone()
-    if exists:
+        (recipe_id, u["id"]),
+    ).fetchone():
         flash("You already submitted for this recipe.", "info")
         return redirect(url_for("index"))
 
@@ -533,7 +496,7 @@ def submit_image(recipe_id: int):
 
     db.execute(
         "INSERT INTO submissions (recipe_id, user_id, image_base64, submitted_at) VALUES (?, ?, ?, ?)",
-        (recipe_id, user["id"], b64, utcnow_ts()),
+        (recipe_id, u["id"], b64, utcnow_ts()),
     )
     db.commit()
     flash("Submission uploaded. Good luck!", "success")
@@ -543,8 +506,8 @@ def submit_image(recipe_id: int):
 # Admin
 # ------------------------------------------------------------------------------
 def require_admin():
-    user = current_user()
-    if not user or user["role"] != "admin":
+    u = current_user()
+    if not u or u["role"] != "admin":
         flash("Admin access required.", "danger")
         return False
     return True
@@ -568,26 +531,14 @@ def admin():
 
         if not title or not ingredients or not instructions:
             flash("Title, ingredients, and instructions are required.", "danger")
-            return render_template(
-                "admin.html",
-                active_tab=tab,
-                active_recipe=active_recipe,
-                submissions=[],
-                users=users,
-            )
+            return render_template("admin.html", active_tab=tab, active_recipe=active_recipe, submissions=[], users=users)
 
         b64 = None
         if file and file.filename:
             b64 = file_to_jpeg_base64(file)
             if not b64:
                 flash("Please upload a PNG or JPEG image.", "danger")
-                return render_template(
-                    "admin.html",
-                    active_tab=tab,
-                    active_recipe=active_recipe,
-                    submissions=[],
-                    users=users,
-                )
+                return render_template("admin.html", active_tab=tab, active_recipe=active_recipe, submissions=[], users=users)
 
         db.execute(
             "INSERT INTO recipes (title, ingredients, instructions, image_base64, posted_at) VALUES (?, ?, ?, ?, ?)",
@@ -597,34 +548,30 @@ def admin():
         flash("Recipe posted!", "success")
         return redirect(url_for("admin", tab="post_recipe"))
 
-    # View submissions tab
     submissions = []
-    if tab == "view_submissions":
-        if active_recipe:
-            rows = db.execute(
-                """
-                SELECT s.id AS submission_id, s.image_base64, s.submitted_at,
-                       u.username, r.title
-                FROM submissions s
-                JOIN users u ON u.id = s.user_id
-                JOIN recipes r ON r.id = s.recipe_id
-                WHERE s.recipe_id = ?
-                ORDER BY s.submitted_at DESC
-                """,
-                (active_recipe["id"],),
-            ).fetchall()
-            submissions = [
-                {
-                    "submission_id": r["submission_id"],
-                    "image_base64": r["image_base64"],
-                    "submitted_at": datetime.fromtimestamp(r["submitted_at"]).strftime(
-                        "%Y-%m-%d %H:%M"
-                    ),
-                    "username": r["username"],
-                    "title": r["title"],
-                }
-                for r in rows
-            ]
+    if tab == "view_submissions" and active_recipe:
+        rows = db.execute(
+            """
+            SELECT s.id AS submission_id, s.image_base64, s.submitted_at,
+                   u.username, r.title
+            FROM submissions s
+            JOIN users u ON u.id = s.user_id
+            JOIN recipes r ON r.id = s.recipe_id
+            WHERE s.recipe_id = ?
+            ORDER BY s.submitted_at DESC
+            """,
+            (active_recipe["id"],),
+        ).fetchall()
+        submissions = [
+            {
+                "submission_id": r["submission_id"],
+                "image_base64": r["image_base64"],
+                "submitted_at": datetime.fromtimestamp(r["submitted_at"]).strftime("%Y-%m-%d %H:%M"),
+                "username": r["username"],
+                "title": r["title"],
+            }
+            for r in rows
+        ]
 
     return render_template(
         "admin.html",
@@ -677,7 +624,6 @@ def delete_recipe(recipe_id: int):
     if not require_admin():
         return redirect(url_for("index"))
     db = get_db()
-    # delete dependent rows
     db.execute(
         "DELETE FROM votes WHERE submission_id IN (SELECT id FROM submissions WHERE recipe_id=?)",
         (recipe_id,),
@@ -692,5 +638,4 @@ def delete_recipe(recipe_id: int):
 # WSGI entrypoint
 # ------------------------------------------------------------------------------
 if __name__ == "__main__":
-    # Local dev
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "5000")), debug=True)
