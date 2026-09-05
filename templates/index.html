@@ -4,8 +4,8 @@
 {% block hero %}
 <section class="section-hero py-5 py-lg-6 border-bottom">
   <div class="container">
-    <div class="row align-items-center gy-4">
-      <div class="col-lg-7">
+    <div class="row align-items-center gy-4 gx-lg-5">
+      <div class="{{ 'col-lg-6' if not session.get('user_id') else 'col-lg-7' }}">
         <h1 class="display-5 fw-bold mb-3">
           {% if session.get('user_id') %}
             Welcome, {{ user['username'] }}
@@ -28,9 +28,19 @@
         {% endif %}
       </div>
       {% if not session.get('user_id') %}
-      <!-- Show promo image only for logged-out visitors -->
-      <div class="col-lg-5">
-        <img class="w-100 rounded-xxl shadow-sm" src="https://images.unsplash.com/photo-1543353071-10c8ba85a904?q=80&w=1200&auto=format&fit=crop" alt="Fresh ingredients">
+      <div class="col-lg-6">
+        <figure class="explainer-video-card mb-0">
+          <div class="ratio ratio-16x9 overflow-hidden rounded-xxl bg-dark">
+            <video class="w-100 h-100" controls playsinline preload="metadata" aria-label="Recipe Rumble player guide">
+              <source src="{{ url_for('static', filename='video/recipe-rumble-player-guide.mp4') }}" type="video/mp4">
+              Your browser does not support the video player.
+            </video>
+          </div>
+          <figcaption class="d-flex align-items-center justify-content-between gap-3 px-2 pt-3">
+            <span class="fw-semibold"><i class="fa-regular fa-circle-play text-accent me-2" aria-hidden="true"></i>See how Recipe Rumble works</span>
+            <span class="small text-secondary text-nowrap">Player guide · 3:35</span>
+          </figcaption>
+        </figure>
       </div>
       {% endif %}
     </div>
